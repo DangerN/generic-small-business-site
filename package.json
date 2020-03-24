@@ -1,0 +1,23 @@
+{
+  "name": "generic-small-business-site",
+  "version": "1.0.0",
+  "description": "Base for small business site",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DangerN/generic-small-business-site.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DangerN/generic-small-business-site/issues"
+  },
+  "homepage": "https://github.com/DangerN/generic-small-business-site#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mysql": "^2.18.1"
+  }
+}
