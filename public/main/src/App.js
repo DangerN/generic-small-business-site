@@ -2,7 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-import { Button, Card, Row, Col } from 'react-materialize';
+// import { Button, Card, Row, Col } from 'react-materialize';
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          I'm the main page!
         </a>
       </header>
     </div>
