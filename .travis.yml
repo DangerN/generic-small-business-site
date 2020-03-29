@@ -23,8 +23,8 @@ jobs:
     - stage: build
       script:
       - cd ./public/main
-      - npm build
+      - npm run build
       - cd ../dashboard
-      - npm build
+      - npm run build
       - cd ../..
       - echo "YOLO"
