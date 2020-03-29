@@ -6,6 +6,8 @@ node_js:
 cache:
   directories:
     - node_modules
+    - public/main/node_modules
+    - public/dashboard/node_modules
 
 install:
   - cd ./public/main
