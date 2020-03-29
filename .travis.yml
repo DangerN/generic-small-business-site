@@ -20,4 +20,11 @@ jobs:
     - stage: test
       script:
       - npm test
-      - echo "lol wut"
+    - stage: build
+      script:
+      - cd ./public/main
+      - npm build
+      - cd ../dashboard
+      - npm build
+      - cd ../..
+      - echo "YOLO"
