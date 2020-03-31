@@ -15,21 +15,22 @@ install:
 - npm install
 jobs:
   include:
-  - stage: test
-    script: npm test
-    script: cd ./public/main && npm test
-    script: cd ./public/dashboard && npm test
-  - stage: build
-    script:
-    - cd ./public/main
-    - npm run build
-    - cd ../dashboard
-    - npm run build
-    - cd ../..
-    - echo "YOLO"
+    - stage: test
+      script: npm test
+    -
+      script: cd ./public/main && npm test
+    -
+      script: cd ./public/dashboard && npm test
+    - stage: build
+      script:
+      - cd ./public/main
+      - npm run build
+      - cd ../dashboard
+      - npm run build
+      - cd ../..
+      - echo "YOLO"
 deploy:
   provider: heroku
   api_key:
     secure: rTEWAgqvl7VtlAIelWt97o6PiXqjbcKhs0Z1QeoQdDXUOTkDfWWX6nkPQpzGQurOaEOSK2JxgTnBwUvwFCdDs57tEAvrai4bADeL0RkkT9ea2n2IkpHFsgyWpUwzhcpoz6CeEZo2ifIdemKFExhHyTJCgkymSQn4e7X9mV2gLd0lasW+ihA5xvfcnKdmK7FyNG0/7boTNxuoI+dU7aN57w1vt7xwhlSrd01t7rEkuuh3/fzowBDqiVWc780p67PA5In9qlSGQTUbOC1/o18EenHq85xB+z4E8M9gBIURpTcSXpHmYA1oynG9a85A1c8rU0MLvyIGghj5eA9LN3cy7xKdp+EJYa5EhErUiQvnotQHVH80MEXjjt614jzlzCPV0g4t8hNDCRgNm6iGCpSlrThJJTrLEqRHyaeEFCw1eOI8pOQk7w70gdtAZcL8QDeQgZtXat50C6mCr7eZmoi9ue6vPaRp3y5zoo/ZKsyX0majOgiuPhVO8YsrYK3b6tkv99UDAUM3azF62LvHke2DIPh6wxQKl2b2cvOAAVvAkWsYTtJM38K1EyQyRRrVsOHkMv0WgCulp/8BYKQBLgYMQEgMqFcVILDNdpzYfahU8L7S82PRILQoSQP1J6HZkwMGSg31N14BdkJOmRhkoY7I3TUdvJ6z2nbkyx9OnoYjAo4=
   app: generic-business
-  skip_cleanup: true
