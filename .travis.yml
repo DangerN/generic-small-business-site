@@ -18,6 +18,10 @@ jobs:
   - stage: test
     script:
     - npm test
+    script:
+    - cd ./public/main && npm test
+    script:
+    - cd ./public/dashboard && npm test
   - stage: build
     script:
     - cd ./public/main
