@@ -24,6 +24,7 @@ jobs:
       script:
       - cd ./public/main
       - npm run build
+      if: branch = master
     -
       script:
       - cd ./public/dashboard
