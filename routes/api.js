@@ -9,7 +9,7 @@ router.get('/', function (req, res) {
 })
 
 router.get('/blog', function (req, res) {
-  res.send('you got the blog!')
+  res.json('you got the blog!')
 })
 
 router.post('/blog', function (req, res) {
