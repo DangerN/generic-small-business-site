@@ -26,7 +26,7 @@ jobs:
       - npm run build
     -
       script:
-      - cd ../dashboard
+      - cd ./public/dashboard
       - npm run build
     - stage: deploy
       deploy:
