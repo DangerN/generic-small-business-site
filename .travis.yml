@@ -14,24 +14,21 @@ jobs:
       - npm install
       - cd ../dashboard
       - npm install
-      - cd ../..
-      - npm install
     - stage: test
       script: npm test
     -
       script: cd ./public/main && npm test
     -
       script: cd ./public/dashboard && npm test
-    # - stage: build
-    - stage: deploy
+    - stage: build
       script:
       - cd ./public/main
       - npm run build
+    -
+      script:
       - cd ../dashboard
       - npm run build
-      - cd ../..
-      # - ls ./public/main/build
-      # - ls ./public/dashboard/build
+    - stage: deploy
       deploy:
         edge: true
         provider: heroku
