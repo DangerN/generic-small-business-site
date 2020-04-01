@@ -6,13 +6,6 @@ cache:
   - node_modules
   - public/main/node_modules
   - public/dashboard/node_modules
-# install:
-# - cd ./public/main
-# - npm install
-# - cd ../dashboard
-# - npm install
-# - cd ../..
-# - npm install
 jobs:
   include:
     - stage: install
