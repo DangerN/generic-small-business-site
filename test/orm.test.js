@@ -1,16 +1,24 @@
 const chai = require('chai')
+const sinon = require('sinon');
 chai.should()
 
 const orm = require('../models');
 
 describe('post', function () {
+  let mock
+  before(() => {
+    mock = sinon.mock(require('../db'))
+  })
+  after(() => {
+    mock.restore()
+  })
   describe('#getAll', function () {
     it('should return all posts as array', function () {
       orm.post.getAll().should.be.a('array')
     })
   })
   describe('#getOne', function () {
-    let onePost = orm.post.getOne()
+    let onePost = orm.post.getOne(4)
     it('should return one post as object', function () {
       onePost.should.be.a('object')
     })

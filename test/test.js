@@ -1,9 +1,9 @@
 const request = require('supertest');
 const api = require('../routes/api')
 const express = require('express');
-const app = express()
+const app = express();
 
-app.use('/api', api)
+app.use('/api', api);
 
 describe('blog', () => {
   describe("GET /api/blog", () => {
