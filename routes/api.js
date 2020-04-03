@@ -13,7 +13,8 @@ router.get('/blog', function (req, res) {
 })
 
 router.post('/blog', function (req, res) {
-  res.sendStatus(501)
+  res.status(201)
+  res.json()
 })
 
 router.put('/blog/:id', function (req, res) {
@@ -22,6 +23,14 @@ router.put('/blog/:id', function (req, res) {
 
 router.delete('/blog/:id', function (req, res) {
   res.sendStatus(501)
+})
+
+router.get('/store', function (req, res) {
+  res.json()
+})
+
+router.get('/store/products', function (req, res) {
+  res.json()
 })
 
 module.exports = router

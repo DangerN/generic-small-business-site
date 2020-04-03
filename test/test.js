@@ -1,18 +1,9 @@
-// const chai = require('chai')
-// chai.should()
-//
-// describe("Having a test", function () {
-//   it('should have a test', function () {
-//     "test".should.eq("test")
-//   })
-// })
-
 const request = require('supertest');
 const api = require('../routes/api')
 const express = require('express');
-const app = express()
+const app = express();
 
-app.use('/api', api)
+app.use('/api', api);
 
 describe('blog', () => {
   describe("GET /api/blog", () => {
@@ -57,10 +48,18 @@ describe('store', () => {
   describe("GET /api/store/products", () => {
     it('returns JSON', function (done) {
       request(app)
-        .get('/api/store')
+        .get('/api/store/products')
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200, done);
     })
+  })
+})
+
+describe('/api', () => {
+  it('returns 404', function (done) {
+    request(app)
+      .get('/')
+      .expect(404, done)
   })
 })
