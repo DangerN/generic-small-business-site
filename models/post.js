@@ -2,8 +2,11 @@ const db = require('../db');
 
 module.exports = {
   getAll: () => {
-    //gets all posts
-    return [{}]
+    db.query('select * from post', '', function (res) {
+      console.log('wut`');
+      return res
+    })
+    // return [{}]
   },
   getOne: (post) => {
     return {}

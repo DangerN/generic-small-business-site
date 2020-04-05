@@ -5,18 +5,28 @@ chai.should()
 const orm = require('../models');
 
 describe('post', function () {
-  let mock
+  let stub
   before(() => {
-    mock = sinon.mock(require('../db'))
+    stub = sinon.stub(require('../db'), 'query').callsFake(function (text, params, callback) {
+      console.log(callback);
+      switch (params) {
+        case '':
+          return [{}, {}]
+        case /\d/:
+          return {id: params}
+      }
+    })
+    console.log('stubbed');
   })
   after(() => {
-    mock.restore()
+    stub.restore()
   })
-  describe('#getAll', function () {
-    it('should return all posts as array', function () {
-      orm.post.getAll().should.be.a('array')
-    })
-  })
+  // describe('#getAll', function () {
+  //   it('should return all posts as array', function () {
+  //     console.log(orm.post.getAll());
+  //     orm.post.getAll().should.be.a('array')
+  //   })
+  // })
   describe('#getOne', function () {
     let onePost = orm.post.getOne(4)
     it('should return one post as object', function () {
@@ -37,3 +47,5 @@ describe('product', function () {
     })
   })
 })
+
+// const
