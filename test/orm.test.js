@@ -13,9 +13,6 @@ describe('post', function () {
     stub = sinon.stub(require('../db'), 'query')
     stub.withArgs().returns({rows: [{id: 1}, {id: 2}, {id: 3}]})
     stub.withArgs('select * from test where id=$1', [2]).returns({rows: [{id: 2}]})
-    // stub = sinon.stub(require('../db'), 'query').callsFake((text, params) => {
-    //   return {rows: [{id: 0}]}
-    // })
   })
   after(() => {
     stub.restore()
@@ -28,7 +25,7 @@ describe('post', function () {
   describe('#getOne', function () {
     let onePost = orm.post.getOne(4)
     it('should return one post as object', function () {
-      onePost.should.be.a('object')
+      onePost.should.eventually.be.a('object')
     })
   })
 })
