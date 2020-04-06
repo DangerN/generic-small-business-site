@@ -1,26 +1,31 @@
 const chai = require('chai')
 const sinon = require('sinon');
+var chaiAsPromised = require("chai-as-promised")
+
+chai.use(chaiAsPromised)
 chai.should()
 
 const orm = require('../models');
 
 describe('post', function () {
-  let mock
+  let stub
   before(() => {
-    mock = sinon.mock(require('../db'))
+    stub = sinon.stub(require('../db'), 'query')
+    stub.withArgs().returns({rows: [{id: 1}, {id: 2}, {id: 3}]})
+    stub.withArgs('select * from test where id=$1', [2]).returns({rows: [{id: 2}]})
   })
   after(() => {
-    mock.restore()
+    stub.restore()
   })
   describe('#getAll', function () {
     it('should return all posts as array', function () {
-      orm.post.getAll().should.be.a('array')
+      return orm.post.getAll().should.eventually.be.a('array')
     })
   })
   describe('#getOne', function () {
     let onePost = orm.post.getOne(4)
     it('should return one post as object', function () {
-      onePost.should.be.a('object')
+      onePost.should.eventually.be.a('object')
     })
   })
 })
