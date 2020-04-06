@@ -1,7 +1,7 @@
-import React from 'react';
-import { render } from '@testing-library/react';
+import React from 'react'
+import { shallow } from 'enzyme'
 import App from './App';
 
-test('passes', () => {
-  expect(true).toEqual(true)
+it('renders', () => {
+  shallow(<App />)
 });

@@ -42,5 +42,3 @@ describe('product', function () {
     })
   })
 })
-
-// const
