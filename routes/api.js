@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router()
+const orm = require('../models')
 
 router.use(express.json())
 router.use(express.urlencoded({extended: true}))
@@ -9,7 +10,8 @@ router.get('/', function (req, res) {
 })
 
 router.get('/blog', function (req, res) {
-  res.json('you got the blog!')
+  console.log(orm);
+  res.json(orm.post.getAll())
 })
 
 router.post('/blog', function (req, res) {

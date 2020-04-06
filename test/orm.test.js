@@ -8,25 +8,29 @@ describe('post', function () {
   let stub
   before(() => {
     stub = sinon.stub(require('../db'), 'query').callsFake(function (text, params, callback) {
-      console.log(callback);
+      console.log(text);
+      console.log('in stub', callback);
+      console.log('in voked', callback('sneed'));
+      console.log(params);
       switch (params) {
         case '':
+          console.log('blank case');
           return [{}, {}]
         case /\d/:
           return {id: params}
       }
+      return 'benis'
     })
-    console.log('stubbed');
   })
   after(() => {
     stub.restore()
   })
-  // describe('#getAll', function () {
-  //   it('should return all posts as array', function () {
-  //     console.log(orm.post.getAll());
-  //     orm.post.getAll().should.be.a('array')
-  //   })
-  // })
+  describe('#getAll', function () {
+    it('should return all posts as array', function () {
+      console.log(29, orm.post.getAll());
+      orm.post.getAll().should.be.a('array')
+    })
+  })
   describe('#getOne', function () {
     let onePost = orm.post.getOne(4)
     it('should return one post as object', function () {

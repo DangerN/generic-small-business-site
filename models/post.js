@@ -1,12 +1,10 @@
 const db = require('../db');
 
 module.exports = {
-  getAll: () => {
-    db.query('select * from post', '', function (res) {
-      console.log('wut`');
-      return res
-    })
-    // return [{}]
+  getAll: async () => {
+    console.log('should be trying to get all');
+    const {rows} = await db.query('select * from test', '')
+    console.log(rows);
   },
   getOne: (post) => {
     return {}
