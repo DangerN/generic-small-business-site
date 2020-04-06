@@ -1,5 +1,8 @@
 const chai = require('chai')
 const sinon = require('sinon');
+var chaiAsPromised = require("chai-as-promised")
+
+chai.use(chaiAsPromised)
 chai.should()
 
 const orm = require('../models');
@@ -7,28 +10,19 @@ const orm = require('../models');
 describe('post', function () {
   let stub
   before(() => {
-    stub = sinon.stub(require('../db'), 'query').callsFake(function (text, params, callback) {
-      console.log(text);
-      console.log('in stub', callback);
-      console.log('in voked', callback('sneed'));
-      console.log(params);
-      switch (params) {
-        case '':
-          console.log('blank case');
-          return [{}, {}]
-        case /\d/:
-          return {id: params}
-      }
-      return 'benis'
-    })
+    stub = sinon.stub(require('../db'), 'query')
+    stub.withArgs().returns({rows: [{id: 1}, {id: 2}, {id: 3}]})
+    stub.withArgs('select * from test where id=$1', [2]).returns({rows: [{id: 2}]})
+    // stub = sinon.stub(require('../db'), 'query').callsFake((text, params) => {
+    //   return {rows: [{id: 0}]}
+    // })
   })
   after(() => {
     stub.restore()
   })
   describe('#getAll', function () {
     it('should return all posts as array', function () {
-      console.log(29, orm.post.getAll());
-      orm.post.getAll().should.be.a('array')
+      return orm.post.getAll().should.eventually.be.a('array')
     })
   })
   describe('#getOne', function () {

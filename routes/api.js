@@ -1,17 +1,13 @@
-const express = require('express');
-const router = express.Router()
 const orm = require('../models')
-
-router.use(express.json())
-router.use(express.urlencoded({extended: true}))
+const Router = require('express-promise-router')
+const router = new Router()
 
 router.get('/', function (req, res) {
   res.send('api ok!')
 })
 
-router.get('/blog', function (req, res) {
-  console.log(orm);
-  res.json(orm.post.getAll())
+router.get('/blog', async function (req, res) {
+  res.json(await orm.post.getAll())
 })
 
 router.post('/blog', function (req, res) {

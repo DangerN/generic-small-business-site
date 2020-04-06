@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/DangerN/generic-small-business-site#readme",
   "dependencies": {
+    "chai-as-promised": "^7.1.1",
     "express": "^4.17.1",
     "express-promise-router": "^3.0.3",
     "mysql": "^2.18.1",
