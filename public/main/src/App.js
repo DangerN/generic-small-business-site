@@ -4,7 +4,6 @@ import Landing from './components/Landing'
 import NotFoundPage from './components/NotFoundPage'
 import './App.css';
 import { useRoutes } from 'hookrouter'
-// import { Button, Card, Row, Col } from 'react-materialize';
 
 const routes = {
   '/': () => <Landing />,
