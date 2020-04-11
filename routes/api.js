@@ -15,8 +15,8 @@ router.get('/blog', function (req, res) {
 
 router.post('/blog', function (req, res) {
   post.create(req.body.title, req.body.body)
-  .then(() => {
-    res.sendStatus(201)
+  .then(newPost => {
+    res.status(201).json(newPost)
   })
   .catch((e) => {
     console.log(e)

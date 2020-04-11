@@ -1,4 +1,5 @@
 const request = require('supertest');
+const sinon = require('sinon');
 const api = require('../routes/api')
 const express = require('express');
 const app = express();

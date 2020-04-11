@@ -4,7 +4,8 @@ module.exports = {
   getAll: () => {
     return new Promise(function(resolve, reject) {
       db.query('select * from posts')
-      .then(({rows}) => resolve(rows))
+      .then(({rows}) => {
+        resolve(rows)})
       .catch(reject)
     });
   },
@@ -16,8 +17,10 @@ module.exports = {
   },
   create: (title, body) => {
     return new Promise(function(resolve, reject) {
-      db.query('insert into posts (title, body) values ($1, $2)', [title, body])
-      .then(resolve)
+      db.query('insert into posts (title, body) values ($1, $2) returning *', [title, body])
+      .then(({rows}) => {
+        resolve(rows[0])
+      })
       .catch(reject)
     });
   }
