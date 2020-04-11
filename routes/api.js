@@ -2,8 +2,15 @@ const { post, product } = require('../models')
 const Router = require('express-promise-router')
 const router = new Router()
 
-router.get('/blog', async function (req, res) {
-  res.json(await post.getAll())
+router.get('/blog', function (req, res) {
+  post.getAll()
+  .then(posts => {
+    res.json(posts)
+  })
+  .catch((e) => {
+    console.log(e)
+    res.sendStatus(500)
+  })
 })
 
 router.post('/blog', function (req, res) {

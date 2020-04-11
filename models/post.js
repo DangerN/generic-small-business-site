@@ -1,11 +1,11 @@
 const db = require('../db');
 
 module.exports = {
-  getAll: async () => {
-    const {rows} = await db.query('select * from posts')
+  getAll: () => {
     return new Promise(function(resolve, reject) {
-      console.log(rows);
-      rows ? resolve(rows) : reject()
+      db.query('select * from posts')
+      .then(({rows}) => resolve(rows))
+      .catch(reject)
     });
   },
   getOne: async (post) => {
