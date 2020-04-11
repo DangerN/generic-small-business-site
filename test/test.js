@@ -1,5 +1,6 @@
 const request = require('supertest');
 const sinon = require('sinon');
+const { fakePG } = require('./helpers');
 const api = require('../routes/api')
 const express = require('express');
 const app = express();
@@ -12,20 +13,7 @@ describe('blog', () => {
   let stub
   before(() => {
     // this mocks the call to pg. all params are an array
-    stub = sinon.stub(require('../db'), 'query').callsFake(function fakeDB(text, params) {
-      const fakeQueries = {
-        'select * from posts': () => {
-          return {rows: [{id: 1}, {id: 2}, {id: 3}]}
-        },
-        'select * from posts where id = $1': (params) => {
-          return {rows: [{id: params[0]}]}
-        },
-        'insert into posts (title, body) values ($1, $2) returning *': (params) => {
-          return {rows: [{id: 1, title: params[0], body: params[1]}]}
-        }
-      }
-      return Promise.resolve(fakeQueries[text](params))
-    })
+    stub = sinon.stub(require('../db'), 'query').callsFake(fakePG)
   })
   after(() => {
     stub.restore()
