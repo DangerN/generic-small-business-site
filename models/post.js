@@ -9,10 +9,13 @@ module.exports = {
       .catch(reject)
     });
   },
-  getOne: async (post) => {
-    const {rows} = await db.query('select * from posts where id = $1', [post])
+  getOne: (post) => {
     return new Promise(function(resolve, reject) {
-      rows[0] ? resolve(rows[0]) : reject()
+      db.query('select * from posts where id = $1', [post])
+      .then(({rows}) => {
+        resolve(rows[0])
+      })
+      .catch(reject)
     });
   },
   create: (title, body) => {
