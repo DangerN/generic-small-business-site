@@ -12,7 +12,6 @@ app.use('/api', api);
 describe('blog', () => {
   let stub
   before(() => {
-    // this mocks the call to pg. all params are an array
     stub = sinon.stub(require('../db'), 'query').callsFake(fakePG)
   })
   after(() => {

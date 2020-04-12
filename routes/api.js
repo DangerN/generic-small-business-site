@@ -16,7 +16,6 @@ router.get('/blog', function (req, res) {
 router.post('/blog', function (req, res) {
   post.create(req.body.title, req.body.body)
   .then(newPost => {
-    console.log(newPost);
     res.status(201).json(newPost)
   })
   .catch((e) => {
