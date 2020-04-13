@@ -8,29 +8,18 @@ cache:
   - public/dashboard/node_modules
 jobs:
   include:
-    - stage: install
-      script:
-      - cd ./public/main
-      - npm install
-      - cd ../dashboard
-      - npm install
     - stage: test
       script: npm test
     -
       script: cd ./public/main && npm test
     -
       script: cd ./public/dashboard && npm test
-    - stage: build
+    - stage: deploy
       script:
       - cd ./public/main
       - npm run build
-      if: branch = master
-    -
-      script:
-      - cd ./public/dashboard
+      - cd ../dashboard
       - npm run build
-      if: branch = master
-    - stage: deploy
       deploy:
         edge: true
         provider: heroku

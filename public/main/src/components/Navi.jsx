@@ -7,7 +7,7 @@ const Navi = props => {
       <A href='/'>Home</A>
       <A href='/'>About</A>
       <A href='/'>Contact</A>
-      <A href='/'>Shopw</A>
+      <A href='/'>Shop</A>
     </div>
   )
 }
