@@ -20,6 +20,7 @@ jobs:
       - npm run build
       - cd ../dashboard
       - npm run build
+      - cd ../..
       deploy:
         edge: true
         provider: heroku
