@@ -18,10 +18,12 @@ const Navi = props => {
           <Button variant="outline-success">Search</Button>
         </Form>
         <Nav>
-          <Nav.Link href='/cart' as={A} ><FaShoppingCart/></Nav.Link>
+          <Nav.Link as={A} href='/cart' ><FaShoppingCart/></Nav.Link>
           <Nav.Link href='/user' as={A} ><FaUserCircle/><div>Sign In</div></Nav.Link>
         </Nav>
       </Navbar.Collapse>
+      <A href='/'>home</A>
+      <A href='/cart'>cart</A>
     </Navbar>
   )
 }
