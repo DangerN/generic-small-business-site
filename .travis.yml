@@ -11,9 +11,9 @@ jobs:
     - stage: test
       script: npm test
     -
-      script: cd ./public/main && npm test
+      script: cd ./public/main && npm ci && npm test
     -
-      script: cd ./public/dashboard && npm test
+      script: cd ./public/dashboard && npm ci && npm test
     - stage: deploy
       script:
       - cd ./public/main
