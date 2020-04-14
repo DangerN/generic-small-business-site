@@ -16,9 +16,9 @@ jobs:
       script: cd ./public/dashboard && npm ci && npm test
     - stage: deploy
       script:
-      - cd ./public/main
+      - cd ./public/main && npm ci
       - npm run build
-      - cd ../dashboard
+      - cd ../dashboard && npm ci
       - npm run build
       - cd ../..
       deploy:
