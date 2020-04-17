@@ -15,7 +15,7 @@ const { Client } = require('pg');
 //   query: (text, params) => pool.query(text, params),
 // }
 
-let options = process.env.DATABASE_URL ? {connectionString: connectionString, ssl: true} : {}
+let options = process.env.DATABASE_URL ? {connectionString: process.env.DATABASE_URL, ssl: true} : {}
 let client = new Client(options)
 
 module.exports = {
