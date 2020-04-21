@@ -9,7 +9,7 @@ router.get('/blog', function (req, res) {
   })
   .catch((e) => {
     console.log(e)
-    res.sendStatus(500)
+    res.status(500).send(e)
   })
 })
 
@@ -20,7 +20,7 @@ router.post('/blog', function (req, res) {
   })
   .catch((e) => {
     console.log(e)
-    res.sendStatus(500)
+    res.status(500).send(e)
   })
 })
 

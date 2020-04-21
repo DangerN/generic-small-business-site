@@ -18,7 +18,7 @@ const Navi = props => {
           <Button variant="outline-success">Search</Button>
         </Form>
         <Nav>
-          <Nav.Link as={A} href='/cart' ><FaShoppingCart size='40'/></Nav.Link>
+          <Nav.Link as={A} href='/cart' ><FaShoppingCart size='38'/></Nav.Link>
           <Nav.Link href='/user' as={A} ><FaUserCircle/><div>Sign In</div></Nav.Link>
         </Nav>
       </Navbar.Collapse>
