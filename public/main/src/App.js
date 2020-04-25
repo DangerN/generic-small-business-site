@@ -1,6 +1,5 @@
 import React from 'react';
 import { useRoutes } from 'hookrouter'
-import Container from 'react-bootstrap/Container'
 import Navi from './components/Navi'
 import Landing from './components/Landing'
 import Cart from './components/Cart'
@@ -21,9 +20,7 @@ function App() {
   return (
     <div className="App">
       <Navi />
-      <Container>
-        { route || <NotFoundPage /> }
-      </Container>
+      { route || <NotFoundPage /> }
     </div>
   );
 }
