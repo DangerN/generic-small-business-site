@@ -11,6 +11,7 @@ export default () => {
         return {...state, searchTerm: action.payload}
       },
       'setProducts': () => {
+        console.log(action.payload);
         return {...state, products: action.payload}
       },
     }[action.type]()
