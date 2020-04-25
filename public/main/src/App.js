@@ -10,20 +10,21 @@ import NotFoundPage from './components/NotFoundPage'
 import './App.css';
 
 const routes = {
-  '/': () => () => <Landing />,
-  '/cart': () => () => <Cart />,
-  '/contact': () => () => <Contact />,
-  '/about': () => () => <About />
+  '/': () => props => <Landing {...props} />,
+  '/cart': () => props => <Cart />,
+  '/contact': () => props => <Contact />,
+  '/about': () => props => <About />
 }
 
 function App() {
   const [ state, dispatch ] = useStore()
   const route = useRoutes(routes)
+  console.log(state);
 
   return (
     <div className="App">
       <Navi />
-      { route() || <NotFoundPage /> }
+      { route({...state, dispatch: dispatch}) || <NotFoundPage /> }
     </div>
   );
 }

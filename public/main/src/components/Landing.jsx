@@ -7,6 +7,7 @@ import Form from 'react-bootstrap/Form'
 import { FaSearch } from 'react-icons/fa'
 
 const Landing = props => {
+  const { searchTerm, dispatch } = props
   return (
     <Container>
       <br/>
@@ -14,9 +15,9 @@ const Landing = props => {
       <br/>
       <p style={{textAlign: 'center'}}>Some smaller details, maybe a quote</p>
       <br/>
-      <Form>
+      <Form onSubmit={'handleSearch'}>
         <InputGroup>
-          <FormControl />
+          <FormControl value={searchTerm} onChange={e=>dispatch({type: 'updateSearch', payload: e.target.value})}/>
           <InputGroup.Append>
             <Button><FaSearch/></Button>
           </InputGroup.Append>
