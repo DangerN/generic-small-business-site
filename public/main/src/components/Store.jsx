@@ -9,7 +9,9 @@ const Store = props => {
   const renderProducts = () => products.map(ProductCard)
   return (
     <Container>
-      { renderProducts() }
+      <Row>
+        { renderProducts() }
+      </Row>
     </Container>
   )
 }
