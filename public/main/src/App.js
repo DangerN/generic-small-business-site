@@ -39,7 +39,7 @@ function App() {
             <Cart />
           </Route>
           <Route exact path='/store'>
-            <Store />
+            <Store {...state} dispatch={dispatch} />
           </Route>
           <Route >
             <NotFoundPage />
