@@ -7,6 +7,7 @@ import Landing from './components/Landing'
 import Cart from './components/Cart'
 import Contact from './components/Contact'
 import About from './components/About'
+import Store from './components/Store'
 import NotFoundPage from './components/NotFoundPage'
 import './App.css';
 
@@ -26,7 +27,7 @@ function App() {
         <Navi />
         <Switch>
           <Route exact path='/'>
-            <Landing />
+            <Landing {...state} dispatch={dispatch} />
           </Route>
           <Route exact path='/about'>
             <About />
@@ -37,12 +38,14 @@ function App() {
           <Route exact path='/cart'>
             <Cart />
           </Route>
+          <Route exact path='/store'>
+            <Store />
+          </Route>
           <Route >
             <NotFoundPage />
           </Route>
         </Switch>
       </Router>
-
     </div>
   );
 }
