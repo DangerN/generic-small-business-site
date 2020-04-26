@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useRoutes } from 'hookrouter'
+import { Route, Switch, BrowserRouter as Router } from 'react-router-dom'
 import axios from 'axios'
 import useStore from './hooks/useStore'
 import Navi from './components/Navi'
@@ -10,18 +10,10 @@ import About from './components/About'
 import NotFoundPage from './components/NotFoundPage'
 import './App.css';
 
-const routes = {
-  '/': () => props => <Landing {...props} />,
-  '/cart': () => props => <Cart />,
-  '/contact': () => props => <Contact />,
-  '/about': () => props => <About />
-}
-
 const BASE_PATH = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:4000'
 
 function App() {
   const [ state, dispatch ] = useStore()
-  const route = useRoutes(routes)
 
   useEffect(() => {
     axios(`${BASE_PATH}/api/store/products`)
@@ -30,8 +22,27 @@ function App() {
 
   return (
     <div className="App">
-      <Navi />
-      { route({...state, dispatch: dispatch}) || <NotFoundPage /> }
+      <Router>
+        <Navi />
+        <Switch>
+          <Route exact path='/'>
+            <Landing />
+          </Route>
+          <Route exact path='/about'>
+            <About />
+          </Route>
+          <Route exact path='/contact'>
+            <Contact />
+          </Route>
+          <Route exact path='/cart'>
+            <Cart />
+          </Route>
+          <Route >
+            <NotFoundPage />
+          </Route>
+        </Switch>
+      </Router>
+
     </div>
   );
 }

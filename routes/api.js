@@ -1,7 +1,6 @@
 const { post, product } = require('../models')
 const Router = require('express-promise-router')
 const router = new Router()
-const cors = require('cors')
 
 router.get('/blog', function (req, res) {
   post.getAll()
@@ -37,7 +36,7 @@ router.get('/store', function (req, res) {
   res.json()
 })
 
-router.get('/store/products', cors({origin: 'http://localhost:3100'}), function (req, res) {
+router.get('/store/products', function (req, res) {
   product.getAll()
   .then(products=>{
     res.json(products)
