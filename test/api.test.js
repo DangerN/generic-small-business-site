@@ -51,6 +51,13 @@ describe('blog', () => {
 })
 
 describe('store', () => {
+  let stub
+  before(() => {
+    stub = sinon.stub(require('../db'), 'query').callsFake(fakePG)
+  })
+  after(() => {
+    stub.restore()
+  })
   describe("GET /api/store", () => {
     it('returns JSON', function (done) {
       request(app)
