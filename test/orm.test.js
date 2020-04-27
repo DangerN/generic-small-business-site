@@ -18,13 +18,12 @@ describe('post', function () {
   })
   describe('#getAll', function () {
     it('should return all posts as array', function () {
-      return post.getAll().should.eventually.be.a('array')
+      post.getAll().should.eventually.be.a('array')
     })
   })
   describe('#getOne', function () {
-    let onePost = post.getOne(4)
     it('should return one post as object', function () {
-      onePost.should.eventually.be.a('object')
+      post.getOne(4).should.eventually.be.a('object')
     })
   })
 })
