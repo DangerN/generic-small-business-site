@@ -14,6 +14,7 @@ module.exports = {
         return {rows: [{id: 1}, {id: 2}, {id: 3}]}
       },
       'select * from products where id = $1': (params) => {
+        console.log('i should be a stub for get one product');
         return {rows: [{id: params[0]}]}
       }
     }[text](params))
