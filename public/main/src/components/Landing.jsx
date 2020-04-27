@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import Container from 'react-bootstrap/Container'
 import InputGroup from 'react-bootstrap/InputGroup'
 import FormControl from 'react-bootstrap/FormControl'
@@ -20,6 +21,7 @@ const Landing = props => {
           <FormControl value={searchTerm} onChange={e=>dispatch({type: 'updateSearch', payload: e.target.value})}/>
           <InputGroup.Append>
             <Button><FaSearch/></Button>
+            <Button as={Link} to='/store' >Browse</Button>
           </InputGroup.Append>
         </InputGroup>
       </Form>

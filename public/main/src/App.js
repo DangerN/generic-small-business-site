@@ -7,6 +7,7 @@ import Landing from './components/Landing'
 import Cart from './components/Cart'
 import Contact from './components/Contact'
 import About from './components/About'
+import Store from './components/Store'
 import NotFoundPage from './components/NotFoundPage'
 import './App.css';
 
@@ -23,10 +24,10 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <Navi />
+        <Navi {...state} dispatch={dispatch} />
         <Switch>
           <Route exact path='/'>
-            <Landing />
+            <Landing {...state} dispatch={dispatch} />
           </Route>
           <Route exact path='/about'>
             <About />
@@ -37,12 +38,14 @@ function App() {
           <Route exact path='/cart'>
             <Cart />
           </Route>
+          <Route path='/store'>
+            <Store {...state} dispatch={dispatch} />
+          </Route>
           <Route >
             <NotFoundPage />
           </Route>
         </Switch>
       </Router>
-
     </div>
   );
 }
