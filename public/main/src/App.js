@@ -38,7 +38,7 @@ function App() {
           <Route exact path='/cart'>
             <Cart />
           </Route>
-          <Route exact path='/store'>
+          <Route path='/store'>
             <Store {...state} dispatch={dispatch} />
           </Route>
           <Route >
