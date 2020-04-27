@@ -24,7 +24,7 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <Navi />
+        <Navi {...state} dispatch={dispatch} />
         <Switch>
           <Route exact path='/'>
             <Landing {...state} dispatch={dispatch} />

@@ -2,12 +2,13 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 import Col from 'react-bootstrap/Col'
 import Carousel from 'react-bootstrap/Carousel'
+import Button from 'react-bootstrap/Button'
 
 const Product = props => {
   let { productId } = useParams()
   console.log(productId);
   console.log(props.products);
-  const { name, description, media_links, price } = props.products.find(product=>product.id.toString() === productId)
+  const { name, description, media_links, price } = props.products.find(product=>product.id == productId)
   const carouselImgs = media_links.map(link=>(
     <Carousel.Item>
       <img src={link} width='300' className="d-block w-100" />
@@ -24,6 +25,7 @@ const Product = props => {
         <h3>{name}</h3>
         <p>{description}</p>
         <p>{price}</p>
+        <Button>Add to Cart</Button>
       </Col>
     </>
   )
