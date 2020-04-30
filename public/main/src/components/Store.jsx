@@ -1,5 +1,5 @@
 import React from 'react'
-import { useRouteMatch, Switch, Route, useParams } from 'react-router-dom'
+import { useRouteMatch, Switch, Route } from 'react-router-dom'
 import Product from './Product'
 import StoreSidebar from './StoreSidebar'
 import Container from 'react-bootstrap/Container'
@@ -11,7 +11,6 @@ import ProductCard from './ProductCard'
 const Store = props => {
   const { products, dispatch } = props
   let { path, url } = useRouteMatch()
-  let productId = useParams()
   return (
     <Container>
     <Row>

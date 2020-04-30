@@ -8,6 +8,7 @@ import Cart from './components/Cart'
 import Contact from './components/Contact'
 import About from './components/About'
 import Store from './components/Store'
+import User from './components/User'
 import NotFoundPage from './components/NotFoundPage'
 import './App.css';
 
@@ -19,7 +20,7 @@ function App() {
   useEffect(() => {
     axios(`${BASE_PATH}/api/store/products`)
     .then(({data})=>dispatch({type: 'setProducts', payload: data}))
-  },[])
+  },[dispatch])
 
   return (
     <div className="App">
@@ -37,6 +38,9 @@ function App() {
           </Route>
           <Route exact path='/cart'>
             <Cart />
+          </Route>
+          <Route exact path='/user'>
+            <User />
           </Route>
           <Route path='/store'>
             <Store {...state} dispatch={dispatch} />

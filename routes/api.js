@@ -47,6 +47,14 @@ router.get('/store/products', function (req, res) {
   })
 })
 
+router.get('/images/:id', function (req, res) {
+  
+})
+
+router.post('images', function (req, res) {
+
+})
+
 router.all('*', function (req, res) {
   res.status(404).send('You probably did someting you\'re not supposed to.')
 })

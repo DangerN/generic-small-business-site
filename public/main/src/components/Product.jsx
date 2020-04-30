@@ -6,12 +6,11 @@ import Button from 'react-bootstrap/Button'
 
 const Product = props => {
   let { productId } = useParams()
-  console.log(productId);
-  console.log(props.products);
+  // eslint-disable-next-line
   const { name, description, media_links, price } = props.products.find(product=>product.id == productId)
   const carouselImgs = media_links.map(link=>(
     <Carousel.Item>
-      <img src={link} width='300' className="d-block w-100" />
+      <img src={link} alt='product' width='300' className="d-block w-100" />
     </Carousel.Item>
   ))
   return (
