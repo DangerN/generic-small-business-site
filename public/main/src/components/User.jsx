@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useRouteMatch, Switch, Route, Redirect } from 'react-router-dom'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -12,11 +13,8 @@ import Login from './Login'
 
 const User = props => {
   const [user, setUser ] = useState(false)
-  const [ signUp, setSignup ] = useState(false)
 
-  const login = () => {
-
-  }
+  let { path, url } = useRouteMatch()
 
   const userDetails = () => {
     return (
@@ -29,7 +27,14 @@ const User = props => {
   return (
     <Container>
       <Row>
-        { user ? userDetails() : <Login />}
+        <Switch>
+          <Route exact path={path}>
+            {user ? userDetails() : <Redirect to={{pathname: `${path}/login`}} />}
+          </Route>
+          <Route path={`${path}/login`}>
+            <Login />
+          </Route>
+        </Switch>
       </Row>
     </Container>
   )
