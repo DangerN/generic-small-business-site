@@ -12,7 +12,6 @@ const Store = props => {
   const { products, dispatch } = props
   let { path, url } = useRouteMatch()
   return (
-    <Container>
     <Row>
       <Route exact path={path}>
         <StoreSidebar style={{height: '92vh', overflow: 'scroll'}}/>
@@ -29,8 +28,7 @@ const Store = props => {
           </Switch>
         </Row>
       </Col>
-      </Row>
-    </Container>
+    </Row>
   )
 }
 

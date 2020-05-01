@@ -10,7 +10,7 @@ import { FaSearch } from 'react-icons/fa'
 const Landing = props => {
   const { searchTerm, dispatch } = props
   return (
-    <Container>
+    <>
       <br/>
       <h2 style={{textAlign: 'center'}}>Some big text</h2>
       <br/>
@@ -25,7 +25,7 @@ const Landing = props => {
           </InputGroup.Append>
         </InputGroup>
       </Form>
-    </Container>
+    </>
   )
 }
 

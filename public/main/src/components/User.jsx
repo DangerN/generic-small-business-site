@@ -25,18 +25,16 @@ const User = props => {
   }
 
   return (
-    <Container>
-      <Row>
-        <Switch>
-          <Route exact path={path}>
-            {user ? userDetails() : <Redirect to={{pathname: `${path}/login`}} />}
-          </Route>
-          <Route path={`${path}/login`}>
-            <Login />
-          </Route>
-        </Switch>
-      </Row>
-    </Container>
+    <Row>
+      <Switch>
+        <Route exact path={path}>
+          {user ? userDetails() : <Redirect to={{pathname: `${path}/login`}} />}
+        </Route>
+        <Route path={`${path}/login`}>
+          <Login />
+        </Route>
+      </Switch>
+    </Row>
   )
 }
 

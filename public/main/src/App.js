@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Route, Switch, BrowserRouter as Router } from 'react-router-dom'
 import axios from 'axios'
+import Container from 'react-bootstrap/Container'
 import useStore from './hooks/useStore'
 import Navi from './components/Navi'
 import Landing from './components/Landing'
@@ -26,29 +27,31 @@ function App() {
     <div className="App">
       <Router>
         <Navi {...state} dispatch={dispatch} />
-        <Switch>
-          <Route exact path='/'>
-            <Landing {...state} dispatch={dispatch} />
-          </Route>
-          <Route exact path='/about'>
-            <About />
-          </Route>
-          <Route exact path='/contact'>
-            <Contact />
-          </Route>
-          <Route exact path='/cart'>
-            <Cart />
-          </Route>
-          <Route path='/user'>
-            <User />
-          </Route>
-          <Route path='/store'>
-            <Store {...state} dispatch={dispatch} />
-          </Route>
-          <Route >
-            <NotFoundPage />
-          </Route>
-        </Switch>
+        <Container style={{height: '92vh'}}>
+          <Switch>
+            <Route exact path='/'>
+              <Landing {...state} dispatch={dispatch} />
+            </Route>
+            <Route exact path='/about'>
+              <About />
+            </Route>
+            <Route exact path='/contact'>
+              <Contact />
+            </Route>
+            <Route exact path='/cart'>
+              <Cart />
+            </Route>
+            <Route path='/user'>
+              <User />
+            </Route>
+            <Route path='/store'>
+              <Store {...state} dispatch={dispatch} />
+            </Route>
+            <Route >
+              <NotFoundPage />
+            </Route>
+          </Switch>
+        </Container>
       </Router>
     </div>
   );
