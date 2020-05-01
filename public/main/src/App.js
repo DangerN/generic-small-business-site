@@ -15,6 +15,15 @@ import './App.css';
 
 const BASE_PATH = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:4000'
 
+const APP_STYLE = {
+  backgroundImage: `url(${BASE_PATH}/api/images/background)`,
+  backgroundPosition: 'center center',
+  backgroundRepeat: 'no-repeat',
+  backgroundAttachment: 'fixed',
+  backgroundSize: 'cover',
+  backgroundColor: '#464646'
+}
+
 function App() {
   const [ state, dispatch ] = useStore()
 
@@ -24,7 +33,7 @@ function App() {
   },[dispatch])
 
   return (
-    <div className="App">
+    <div className="App" style={APP_STYLE}>
       <Router>
         <Navi {...state} dispatch={dispatch} />
         <Container style={{height: '92vh'}}>
