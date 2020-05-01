@@ -1,4 +1,16 @@
 const { post, product } = require('../models')
+const admin = require('firebase-admin');
+
+const adminCred = JSON.parse(process.env.FIREBASE_CREDENTIALS)
+
+admin.initializeApp({
+  credential: admin.credential.cert(adminCred),
+  databaseURL: "https://business-app-38533.firebaseio.com",
+  storageBucket: "business-app-38533.appspot.com"
+})
+
+const bucket = admin.storage().bucket()
+
 const Router = require('express-promise-router')
 const router = new Router()
 
@@ -47,8 +59,17 @@ router.get('/store/products', function (req, res) {
   })
 })
 
+router.get('/images/background', function (req, res) {
+  bucket.file('page-background-2400x1600.jpg').download().then(data=>{
+    res.contentType('image/jpeg')
+    res.send(data[0])
+  })
+  .catch(err=>{
+    res.status(500).send(err)
+  })
+})
 router.get('/images/:id', function (req, res) {
-  
+
 })
 
 router.post('images', function (req, res) {
