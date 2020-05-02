@@ -3,6 +3,7 @@ import { Route, Switch, BrowserRouter as Router } from 'react-router-dom'
 import axios from 'axios'
 import Container from 'react-bootstrap/Container'
 import useStore from './hooks/useStore'
+import useMeta from './hooks/useMeta'
 import Navi from './components/Navi'
 import Landing from './components/Landing'
 import Cart from './components/Cart'
@@ -15,7 +16,7 @@ import './App.css';
 
 const BASE_PATH = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:4000'
 
-const APP_STYLE = {
+const BACK_IMG = {
   backgroundImage: `url(${BASE_PATH}/api/images/background)`,
   backgroundPosition: 'center center',
   backgroundRepeat: 'no-repeat',
@@ -26,20 +27,23 @@ const APP_STYLE = {
 
 function App() {
   const [ state, dispatch ] = useStore()
+  const [ metaState, metaDispatch ] = useMeta()
 
   useEffect(() => {
+    axios(`${BASE_PATH}/api/meta`)
+    .then(({data})=>metaDispatch({type: 'dumpMeta', payload: data}))
     axios(`${BASE_PATH}/api/store/products`)
     .then(({data})=>dispatch({type: 'setProducts', payload: data}))
-  },[dispatch])
+  },[dispatch, metaDispatch])
 
   return (
-    <div className="App" style={APP_STYLE}>
+    <div className="App" style={BACK_IMG}>
       <Router>
-        <Navi {...state} dispatch={dispatch} />
+        <Navi {...state} {...metaState} dispatch={dispatch} />
         <Container style={{height: '92vh'}}>
           <Switch>
             <Route exact path='/'>
-              <Landing {...state} dispatch={dispatch} />
+              <Landing {...state} {...metaState} dispatch={dispatch} />
             </Route>
             <Route exact path='/about'>
               <About />

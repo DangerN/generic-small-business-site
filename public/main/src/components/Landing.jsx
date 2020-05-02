@@ -1,6 +1,5 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import Container from 'react-bootstrap/Container'
 import InputGroup from 'react-bootstrap/InputGroup'
 import FormControl from 'react-bootstrap/FormControl'
 import Button from 'react-bootstrap/Button'
@@ -8,11 +7,11 @@ import Form from 'react-bootstrap/Form'
 import { FaSearch } from 'react-icons/fa'
 
 const Landing = props => {
-  const { searchTerm, dispatch } = props
+  const { searchTerm, dispatch, brandName, brandStyle } = props
   return (
     <>
       <br/>
-      <h2 style={{textAlign: 'center'}}>Some big text</h2>
+      <h2 style={{textAlign: 'center', ...brandStyle}}>{brandName}</h2>
       <br/>
       <p style={{textAlign: 'center'}}>Some smaller details, maybe a quote</p>
       <br/>

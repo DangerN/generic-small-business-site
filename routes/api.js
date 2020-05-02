@@ -68,6 +68,16 @@ router.get('/images/background', function (req, res) {
     res.status(500).send(err)
   })
 })
+
+router.get('/meta', function (req, res) {
+  res.send({
+    'brandName': 'Longboard Eternal',
+    'brandStyle': {
+      'fontFamily': "'Permanent Marker', cursive"
+    }
+  })
+})
+
 router.get('/images/:id', function (req, res) {
 
 })
