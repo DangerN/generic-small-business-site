@@ -5,17 +5,9 @@ export default () => {
     searchTerm: '',
     products: []
   }
-  const reducer = (state, action) => {
-    return {
-      'updateSearch': () => {
-        return {...state, searchTerm: action.payload}
-      },
-      'setProducts': () => {
-        console.log(action.payload);
-        return {...state, products: action.payload}
-      },
-    }[action.type]()
-  }
-  const [state, dispatch] = useReducer(reducer, initialState)
-  return [state, dispatch]
+  const reducer = (state, action) => ({
+      'updateSearch': () => ({...state, searchTerm: action.payload}),
+      'setProducts': () => ({...state, products: action.payload}),
+    }[action.type]())
+  return useReducer(reducer, initialState)
 }

@@ -1,19 +1,18 @@
 import React from 'react'
-import { useRouteMatch, Switch, Route, useParams } from 'react-router-dom'
+import { useRouteMatch, Switch, Route } from 'react-router-dom'
 import Product from './Product'
 import StoreSidebar from './StoreSidebar'
-import Container from 'react-bootstrap/Container'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 
 import ProductCard from './ProductCard'
 
 const Store = props => {
+  // eslint-disable-next-line
   const { products, dispatch } = props
+  // eslint-disable-next-line
   let { path, url } = useRouteMatch()
-  let productId = useParams()
   return (
-    <Container>
     <Row>
       <Route exact path={path}>
         <StoreSidebar style={{height: '92vh', overflow: 'scroll'}}/>
@@ -30,8 +29,7 @@ const Store = props => {
           </Switch>
         </Row>
       </Col>
-      </Row>
-    </Container>
+    </Row>
   )
 }
 

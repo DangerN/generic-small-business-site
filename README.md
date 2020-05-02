@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/DangerN/generic-small-business-site.svg?branch=master)](https://travis-ci.com/DangerN/generic-small-business-site)
+
 # generic-small-business-site
 
 Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition. Organically grow the holistic world view of disruptive innovation via workplace diversity and empowerment.

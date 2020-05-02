@@ -4,10 +4,10 @@ import { FaShoppingCart, FaUserCircle, FaSearch } from 'react-icons/fa'
 import { Navbar, Nav, Form, FormControl, Button, InputGroup } from 'react-bootstrap'
 
 const Navi = props => {
-  const { searchTerm, dispatch } = props
+  const { searchTerm, dispatch, brandName, brandStyle } = props
   return (
     <Navbar bg="light" expand="lg" style={{height: '8vh', zIndex: '100'}}>
-      <Navbar.Brand to='/' as={Link}>GBusiness</Navbar.Brand>
+      <Navbar.Brand to='/' as={Link} style={brandStyle}>{brandName}</Navbar.Brand>
       <Navbar.Toggle style={{zIndex: '101'}} />
       <Navbar.Collapse id='basic-navbar-nav' style={{backgroundColor: 'inherit'}}>
         <Nav className='mr-auto'>

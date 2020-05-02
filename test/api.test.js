@@ -1,7 +1,8 @@
+require('dotenv').config()
 const request = require('supertest');
 const sinon = require('sinon');
 const { fakePG } = require('./helpers');
-const api = require('../routes/api')
+const api = require('../routes/api')({})
 const express = require('express');
 const app = express();
 
@@ -51,6 +52,13 @@ describe('blog', () => {
 })
 
 describe('store', () => {
+  let stub
+  before(() => {
+    stub = sinon.stub(require('../db'), 'query').callsFake(fakePG)
+  })
+  after(() => {
+    stub.restore()
+  })
   describe("GET /api/store", () => {
     it('returns JSON', function (done) {
       request(app)
