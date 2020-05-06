@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { FaShoppingCart, FaUserCircle, FaSearch } from 'react-icons/fa'
 import { Navbar, Nav, Form, FormControl, Button, InputGroup } from 'react-bootstrap'
+import useColor from '../hooks/useColor'
 
 const Navi = props => {
   const { searchTerm, dispatch, brandName, brandStyle } = props
@@ -11,14 +12,14 @@ const Navi = props => {
       <Navbar.Toggle style={{zIndex: '101'}} />
       <Navbar.Collapse id='basic-navbar-nav' style={{backgroundColor: 'inherit'}}>
         <Nav className='mr-auto'>
-          <Nav.Link to='/about' as={Link} >About</Nav.Link>
-          <Nav.Link to='/contact' as={Link} >Contact</Nav.Link>
+          <Nav.Link {...useColor('link')} to='/about' as={Link} >About</Nav.Link>
+          <Nav.Link {...useColor('link')} to='/contact' as={Link} >Contact</Nav.Link>
         </Nav>
         <Form inline>
           <InputGroup>
-            <FormControl type="text" placeholder="Search" onChange={e=>dispatch({type: 'updateSearch', payload: e.target.value})} value={searchTerm}/>
+            <FormControl type="text" {...useColor('input')} placeholder="Search" onChange={e=>dispatch({type: 'updateSearch', payload: e.target.value})} value={searchTerm}/>
             <InputGroup.Append>
-              <Button><FaSearch/></Button>
+              <Button {...useColor('button')}><FaSearch/></Button>
             </InputGroup.Append>
           </InputGroup>
         </Form>

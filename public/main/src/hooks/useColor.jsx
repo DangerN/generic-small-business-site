@@ -8,10 +8,14 @@ export default type => {
     onMouseLeave: ()=>setColor('black'),
     style: {
       button: {
-        backgroundColor: color
+        backgroundColor: color,
+        borderColor: color
       },
       link: {
         color: color
+      },
+      input: {
+        borderColor: color
       }
     }[type]
   }
