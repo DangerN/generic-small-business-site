@@ -16,11 +16,19 @@ function App() {
     .then(({data})=>storeDispatch({type: 'setProducts', payload: data}))
   },[storeDispatch])
 
+  const updateProduct = product => {
+    axios({
+      method: 'post',
+      url: `${BASE_PATH}/api/store/products/${product.id}`,
+      data: product
+    }).then(console.log)
+  }
+
   return (
     <Container>
       <Tabs defaultActiveKey="store">
         <Tab eventKey="store" title="Store">
-          <StoreTab {...storeState}/>
+          <StoreTab updateProduct={updateProduct} {...storeState}/>
         </Tab>
         <Tab eventKey="messages" title="Messages">
           Yeet

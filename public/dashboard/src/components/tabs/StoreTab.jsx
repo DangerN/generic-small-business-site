@@ -36,7 +36,7 @@ const StoreTab = props => {
 
   return (
     <Row>
-      <ProductModal show={showModal} {...workingProduct} onHide={handleModalClose}/>
+      <ProductModal updateProduct={props.updateProduct} show={showModal} workingProduct={workingProduct} setWorkingProduct={setWorkingProduct} onHide={handleModalClose}/>
       <Col xs={2}>
         <Button onClick={()=>setModal(true)}>Add Product</Button>
       </Col>
