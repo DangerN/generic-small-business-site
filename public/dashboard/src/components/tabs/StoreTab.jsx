@@ -1,21 +1,34 @@
-import React from 'react'
+import React, {useState} from 'react'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import Table from 'react-bootstrap/Table'
+import ProductModal from './ProductModal'
 
 const StoreTab = props => {
-  console.log(props.products);
+  const [ showModal, setModal ] = useState(false)
+  const [ workingProduct, setWorkingProduct ] = useState({})
+
+  const handlePoductSelect = product => {
+    setWorkingProduct(product)
+    setModal(true)
+  }
+
+  const handleModalClose = () => {
+    setModal(false)
+    setWorkingProduct({})
+  }
+
   const makeProductTable = () => {
-    return props.products.map(({id, name, catagory, price, ship_cost, stock})=>{
+    return props.products.map((product)=>{
       return (
-        <tr onClick={()=>console.log(id)}>
-          <td>{id}</td>
-          <td>{name}</td>
-          <td>{catagory}</td>
-          <td>{price}</td>
-          <td>{ship_cost}</td>
-          <td>{stock}</td>
+        <tr key={product.id} onClick={()=>handlePoductSelect(product)}>
+          <td>{product.id}</td>
+          <td>{product.name}</td>
+          <td>{product.catagory}</td>
+          <td>{product.price}</td>
+          <td>{product.ship_cost}</td>
+          <td>{product.stock}</td>
         </tr>
       )
     })
@@ -23,9 +36,9 @@ const StoreTab = props => {
 
   return (
     <Row>
+      <ProductModal show={showModal} {...workingProduct} onHide={handleModalClose}/>
       <Col xs={2}>
-        <Button>Add Product</Button>
-
+        <Button onClick={()=>setModal(true)}>Add Product</Button>
       </Col>
       <Col xs={10}>
         <Table>

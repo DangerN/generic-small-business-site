@@ -1,9 +1,31 @@
 [![Build Status](https://travis-ci.com/DangerN/generic-small-business-site.svg?branch=master)](https://travis-ci.com/DangerN/generic-small-business-site)
 
-# generic-small-business-site
+[Check it out!](https://generic-business.herokuapp.com/)
 
-Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition. Organically grow the holistic world view of disruptive innovation via workplace diversity and empowerment.
+# Small Business Site
 
-Bring to the table win-win survival strategies to ensure proactive domination. At the end of the day, going forward, a new normal that has evolved from generation X is on the runway heading towards a streamlined cloud solution. User generated content in real-time will have multiple touchpoints for offshoring.
+This is an example app for a small business. It is broken down into two main parts.
 
-Capitalize on low hanging fruit to identify a ballpark value added activity to beta test. Override the digital divide with additional clickthroughs from DevOps. Nanotechnology immersion along the information highway will close the loop on focusing solely on the bottom line.
+## Customer Facing
+
+Allows customers to browse, search, and purchase products. Also contains FAQ, About, and Contact pages.
+
+## Admin Dashboard
+
+Allows the business owner to manage orders and inventory. Can add, remove, and edit products.
+
+## Tech Used
+* #### Front End
+  * React
+  * Bootstrap 4
+  * Tested with Jest and Enzyme
+* #### Back End
+  * node.js
+  * Express.js
+  * Tested with Mocha, Chai, and Sinon
+* #### Database
+  * PostgreSQL
+* #### Others
+  * Travis CI/CD
+  * Heroku
+  * Firebase Storage
