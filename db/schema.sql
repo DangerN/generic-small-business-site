@@ -81,5 +81,25 @@ create table posts (
 insert into posts (title, body)
 values ('test', 'test');
 
+drop table if exists meta;
+
+create table meta (
+	brandName text,
+	brandStyle json,
+	catagories json
+);
+
+insert into meta (brandName, brandStyle, catagories) values
+('Longboard Eternal', '{"fontFamily": "\"Permanent Marker\", cursive"}', '{
+        "Completes": ["Cruiser", "Downhill", "Freeride"],
+        "Decks": [],
+        "Wheels": [],
+        "Trucks": ["TKP","RKP"],
+        "Bearings": [],
+        "Hardware": [],
+        "Safety": ["Helmets", "Pads", "Gloves"]
+      }' );
+
+
 
 select * from users;

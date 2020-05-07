@@ -1,8 +1,16 @@
-const { post, product } = require('../models')
+const { post, product, meta } = require('../models')
 
 const Router = require('express-promise-router')
 const router = new Router()
 const stream = require('stream');
+let metaCache
+
+// shut down server if no/bad db connection
+meta.get().then(meta=>metaCache=meta)
+.catch(err=>{
+  console.log(err);
+  process.exit
+})
 
 module.exports = (bucket) => {
   router.get('/blog', function (req, res) {
@@ -72,11 +80,20 @@ module.exports = (bucket) => {
   })
 
   router.get('/meta', function (req, res) {
-    res.send({
-      'brandName': 'Longboard Eternal',
-      'brandStyle': {
-        'fontFamily': "'Permanent Marker', cursive"
-      }
+    res.json(metaCache)
+  })
+
+  router.post('/meta', function(req, res) {
+    console.log(req.body.attr);
+    console.log(req.body.data);
+    meta.set(req.body.attr, req.body.data)
+    .then(newMeta=>{
+      metaCache = newMeta
+      res.json(newMeta)
+    })
+    .catch(err=>{
+      console.log(err);
+      res.status(500).send(err)
     })
   })
 
@@ -89,7 +106,8 @@ module.exports = (bucket) => {
       res.status(500).send(err)
     })
   })
-  
+
+  // TODO: Add check for file name conflicts
   router.post('/images', function (req, res) {
     const bodyStream = new stream.PassThrough()
     bodyStream.end(req.body)
@@ -97,10 +115,12 @@ module.exports = (bucket) => {
       contentType: 'auto',
       public: true
     }))
-    .on('error', err=>console.log(err))
+    .on('error', err=>{
+      console.log(err)
+      res.sendStatus(500)
+    })
     .on('finish', ()=> {
-
-      res.send()
+      res.status(201).send(req.get('File-Name'))
     })
   })
 

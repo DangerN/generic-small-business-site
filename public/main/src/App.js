@@ -12,7 +12,6 @@ import About from './components/About'
 import Store from './components/Store'
 import User from './components/User'
 import NotFoundPage from './components/NotFoundPage'
-import './App.css';
 
 const BASE_PATH = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:4000'
 
