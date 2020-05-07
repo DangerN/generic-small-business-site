@@ -1,9 +1,9 @@
 require('dotenv').config()
 const express = require('express')
 const app = express()
+const cors = require('cors');
+const bodyParser = require('body-parser');
 const port = process.env.PORT || 4000
-
-// const adminCred = JSON.parse(process.env.FIREBASE_CREDENTIALS)
 
 const admin = require('firebase-admin');
 
@@ -15,8 +15,10 @@ admin.initializeApp({
 
 const bucket = admin.storage().bucket()
 
+app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+app.use(bodyParser.raw({type: 'application/octet-stream', limit: '4mb'}))
 
 app.use('/', express.static('public/main/build'))
 app.use('/dashboard', express.static('public/dashboard/build'))

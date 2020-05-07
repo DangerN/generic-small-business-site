@@ -2,6 +2,7 @@ const { post, product } = require('../models')
 
 const Router = require('express-promise-router')
 const router = new Router()
+const stream = require('stream');
 
 module.exports = (bucket) => {
   router.get('/blog', function (req, res) {
@@ -49,6 +50,17 @@ module.exports = (bucket) => {
     })
   })
 
+  router.post('/store/products/:id', function (req, res) {
+    console.log(req.body)
+    product.updateOne(req.params.id, req.body)
+    .then(product=>{
+      res.json(product)
+    }).catch((e) => {
+      console.log(e)
+      res.status(500).send(e)
+    })
+  })
+
   router.get('/images/background', function (req, res) {
     bucket.file('page-background-2400x1600.jpg').download().then(data=>{
       res.contentType('image/jpeg')
@@ -68,12 +80,28 @@ module.exports = (bucket) => {
     })
   })
 
+
   router.get('/images/:id', function (req, res) {
-
+    bucket.file('cute-potato.jpg').getMetadata().then(data=>{
+      res.send(data[0].mediaLink)
+    })
+    .catch(err=>{
+      res.status(500).send(err)
+    })
   })
+  
+  router.post('/images', function (req, res) {
+    const bodyStream = new stream.PassThrough()
+    bodyStream.end(req.body)
+    bodyStream.pipe(bucket.file(req.get('File-Name')).createWriteStream({
+      contentType: 'auto',
+      public: true
+    }))
+    .on('error', err=>console.log(err))
+    .on('finish', ()=> {
 
-  router.post('images', function (req, res) {
-
+      res.send()
+    })
   })
 
   router.all('*', function (req, res) {
