@@ -17,7 +17,7 @@ const ProductModal = props => {
 
   console.log(workingProduct);
   return (
-    <Modal show={props.show} onHide={props.onHide}>
+    <Modal show={show} onHide={onHide}>
       <Modal.Header closeButton>
         <Modal.Title>{workingProduct.id}</Modal.Title>
       </Modal.Header>
@@ -33,7 +33,7 @@ const ProductModal = props => {
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={()=>setEdit(true)}>Edit</Button>
-        <Button onClick={handleSave}>Save</Button>
+        <Button onClick={()=>updateProduct(workingProduct)}>Save</Button>
       </Modal.Footer>
     </Modal>
   )

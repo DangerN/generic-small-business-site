@@ -53,7 +53,7 @@ const StoreTab = props => {
             </tr>
           </thead>
           <tbody>
-            {makeProductTable()}
+            {props.products && makeProductTable()}
           </tbody>
         </Table>
       </Col>
