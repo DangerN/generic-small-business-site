@@ -29,18 +29,23 @@ function App() {
   }
 
   const updateMeta = newMeta => {
-    axios({
-      method: 'post',
-      url: `${BASE_PATH}/api/meta`,
-      data: newMeta
-    }).then(({data})=>metaDispatch({type: 'dumpMeta', payload: data}))
+    return new Promise(function(resolve, reject) {
+      axios({
+        method: 'post',
+        url: `${BASE_PATH}/api/meta`,
+        data: newMeta
+      }).then(({data})=>{
+        metaDispatch({type: 'dumpMeta', payload: data})
+        resolve()
+      }).catch(reject)
+    });
   }
 
   return (
     <Container>
       <Tabs defaultActiveKey="store">
         <Tab eventKey="store" title="Store">
-          <StoreTab updateProduct={updateProduct} {...storeState} {...metaState}/>
+          <StoreTab updateProduct={updateProduct} {...storeState} meta={{...metaState, updateMeta}}/>
         </Tab>
         <Tab eventKey="messages" title="Messages">
           Yeet

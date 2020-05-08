@@ -3,5 +3,5 @@ import StoreTab from './StoreTab'
 import { shallow } from 'enzyme'
 
 it('renders without crashing', () => {
-  shallow(<StoreTab />)
+  shallow(<StoreTab meta={{}}/>)
 })

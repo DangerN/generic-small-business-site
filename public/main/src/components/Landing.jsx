@@ -10,12 +10,12 @@ import { FaSearch } from 'react-icons/fa'
 import useColor from '../hooks/useColor'
 
 const Landing = props => {
-  const { searchTerm, dispatch, brandname, brandstyle } = props
+  const { searchTerm, dispatch, brandname, brandstyle, tagline } = props
   return (
     <>
       <Jumbotron className='bg-light'>
         <h2 style={{textAlign: 'center', ...brandstyle}}>{brandname}</h2>
-        <p style={{textAlign: 'center'}}>Some smaller details, maybe a quote</p>
+        <p style={{textAlign: 'center'}}>{tagline}</p>
         <p style={{textAlign: 'center'}}>Background by <a {...useColor('link')} href='https://unsplash.com/@monaeendra?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText'>Mona Eendra</a> on <a href='https://unsplash.com/s/photos/longboard?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText' {...useColor('link')}>Unsplash</a></p>
       </Jumbotron>
       <Form onSubmit={'handleSearch'}>

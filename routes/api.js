@@ -84,9 +84,7 @@ module.exports = (bucket) => {
   })
 
   router.post('/meta', function(req, res) {
-    console.log(req.body.attr);
-    console.log(req.body.data);
-    meta.set(req.body.attr, req.body.data)
+    meta.set(req.body)
     .then(newMeta=>{
       metaCache = newMeta
       res.json(newMeta)
@@ -99,7 +97,7 @@ module.exports = (bucket) => {
 
 
   router.get('/images/:id', function (req, res) {
-    bucket.file('cute-potato.jpg').getMetadata().then(data=>{
+    bucket.file(req.params.id).getMetadata().then(data=>{
       res.send(data[0].mediaLink)
     })
     .catch(err=>{
