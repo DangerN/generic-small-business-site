@@ -7,16 +7,18 @@ END;
 $$ LANGUAGE plpgsql;
 
 
-drop table if exists catagories;
+drop table if exists catagories cascade;
 
 create table catagories (
   id serial primary key,
   name text not null
 );
 
-insert into catagories (name) values ('Completes');
+insert into catagories (name) values
+  ('Completes'),
+  ('Wheels');
 
-drop table if exists specs;
+drop table if exists specs cascade;
 
 create table specs (
   id serial primary key,
@@ -26,18 +28,25 @@ create table specs (
 );
 
 insert into specs (type, unit, filter)
-values ('Length', 'in', '{"method":"range","values":"numeric"}');
+values
+  ('Length', 'in', '{"method":"range","values":"numeric"}'),
+  ('Wheel Size', 'mm', '{"method":"range","values":"numeric"}'),
+  ('Brand', 'Name', '{"method":"list","values":"string"}');
 
-drop table if exists catagories_specs;
+drop table if exists catagories_specs cascade;
 
 create table catagories_specs (
-  spec_id int references specs not null,
-  catagory_id int references catagories not null
+  catagory_id int references catagories not null,
+  spec_id int references specs not null
 );
 
-insert into catagories_specs values (1, 1);
+insert into catagories_specs values
+  (1, 1),
+  (1, 3),
+  (2, 2),
+  (2, 3);
 
-drop table if exists products;
+drop table if exists products cascade;
 
 create table products (
 	id serial primary key,
@@ -58,12 +67,12 @@ values (
   'MADRID DTF 39" FLAMINGOS',
   '“A major influence that inspires me are all the Asian styles of craft work. The art is very meticulous and the artists pour their heart and soul into every piece, no matter how small it is. I base all of my animal characters off different symbols or gods found in Asian culture. My artworks are all vector base and are digitally made. It involves a lot of time to make but the result is that the work always looks clean and never pixelated.” -Artist Marc Clenn',
   209.95,
-  '{"CDEC20LONFLA_1024x1024.jpg", "CDEC20LONFLADRO_1024x1024.jpg", "CDEC20LONFLA_2_1024x1024.jpg"}',
+  '{"https://storage.googleapis.com/download/storage/v1/b/business-app-38533.appspot.com/o/CDEC20LONFLA_1024x1024.jpg?generation=1588970465043553&alt=media", "https://storage.googleapis.com/download/storage/v1/b/business-app-38533.appspot.com/o/CDEC20LONFLADRO_1024x1024.jpg?generation=1588970385517148&alt=media", "https://storage.googleapis.com/download/storage/v1/b/business-app-38533.appspot.com/o/CDEC20LONFLA_2_1024x1024.jpg?generation=1588970085527191&alt=media"}',
   1,
   '{"Length":"39"}'
 );
 
-drop table if exists users;
+drop table if exists users cascade;
 
 create table users (
 	id serial primary key,
@@ -82,7 +91,7 @@ insert into users (email, password, admin)
 values
 ('admintest@test.com', '$2y$10$kwvV8.30mPMBYdYjR9xMBOLvWN6TkG9ulqZtmePKygj9FmTgRCSWW', true);
 
-drop table if exists transactions;
+drop table if exists transactions cascade;
 
 create table transactions (
 	id serial primary key,

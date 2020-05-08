@@ -107,9 +107,10 @@ module.exports = (bucket) => {
 
   // TODO: Add check for file name conflicts
   router.post('/images', function (req, res) {
+    const fileName = req.get('File-Name')
     const bodyStream = new stream.PassThrough()
     bodyStream.end(req.body)
-    bodyStream.pipe(bucket.file(req.get('File-Name')).createWriteStream({
+    bodyStream.pipe(bucket.file(fileName).createWriteStream({
       contentType: 'auto',
       public: true
     }))
@@ -118,7 +119,9 @@ module.exports = (bucket) => {
       res.sendStatus(500)
     })
     .on('finish', ()=> {
-      res.status(201).send(req.get('File-Name'))
+      bucket.file(fileName).getMetadata().then(data=>{
+        res.status(201).send(data[0].mediaLink)
+      })
     })
   })
 
