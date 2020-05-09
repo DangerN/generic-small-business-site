@@ -6,37 +6,43 @@ import Dropdown from 'react-bootstrap/Dropdown'
 import InputGroup from 'react-bootstrap/InputGroup'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Badge from 'react-bootstrap/Badge'
 import axios from 'axios'
+import { TiDelete } from 'react-icons/ti'
 import { BASE_PATH } from '../../constants'
+
 
 const SettingsModal = props => {
   console.log(props);
-  const { show, onHide, meta, catagories, specList, getMetaData } = props
+  const { show, onHide, meta, catagories, specList, getMetaData, catagoryList } = props
   const [name, setName] = useState(meta.brandname)
   const [tagline, setTagline] = useState(meta.tagline)
 
   const initSpec = {type: '', unit: '', filter: {values: "numeric", method: "range"}}
   const [activeSpec, setActiveSpec] = useState(initSpec)
 
+  const initCat = {name: ''}
+  const [activeCat, setActiveCat] = useState(initCat)
+  const initCatSpecs = []
+  const [activeCatSpecs, setActiveCatSpecs] = useState(initCatSpecs)
+
+  const newCat = () => setActiveCat({...initCat, id: 'new', name: 'New Catagory'})
+
+  const handleCatSelect = e => {
+    e.preventDefault()
+    setActiveCat(catagoryList.find(cat=>`cat-${cat.id}` === e.target.id))
+    setActiveCatSpecs([...catagories.find(cat=>`cat-${cat.id}` === e.target.id).catagory_specs])
+  }
+
   const specEditing = () => {
     return activeSpec.id ? {disabled: false} : {disabled: true}
   }
 
-  // the entire object must be sent as the meta is completely rewritten on each request.
-  const handleSubmit = e => {
-    console.log('post attempt');
-    e.preventDefault()
-    props.updateMeta({
-      brandname: name,
-      brandstyle: props.brandstyle,
-      tagline: tagline
-    }).then(()=>{
-      alert('success!')
-      onHide()
-    }).catch(console.log)
+  const catEditing = () => {
+    return activeCat.id ? {disabled: false} : {disabled: true}
   }
 
-  const newSpec = () => setActiveSpec({...initSpec, id: 'new'})
+  const newSpec = () => setActiveSpec({...initSpec, id: 'new', type: 'New Spec'})
 
   const saveSpec = () => {
     const specPath = () => activeSpec.id === 'new' ? '' : `/${activeSpec.id}`
@@ -75,10 +81,10 @@ const SettingsModal = props => {
   }
 
   return (
-    <Modal show={true} onHide={onHide}>
+    <Modal show={true} size='lg' onHide={onHide}>
       <Modal.Header closeButton>
         <Modal.Body>
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={e=>e.preventDefault()}>
             <Form.Group>
               <Form.Label>Brand Name</Form.Label>
               <InputGroup>
@@ -117,9 +123,9 @@ const SettingsModal = props => {
                 </Form.Group>
 
               </Form.Row>
-              <Form.Row style={{justifyContent: 'space-between'}}>
+              <Form.Row style={{justifyContent: 'space-around'}}>
                 <Dropdown>
-                  <Dropdown.Toggle >Select Spec</Dropdown.Toggle>
+                  <Dropdown.Toggle >Specification</Dropdown.Toggle>
                   <Dropdown.Menu >
                     { specList.map(spec=>{
                       return (
@@ -136,9 +142,66 @@ const SettingsModal = props => {
               </Form.Row>
             </Form.Group>
             <Form.Group>
-              <Form.Label>catagories</Form.Label>
-              <Form.Control as='textarea' value={tagline} />
-              <Button>Save</Button>
+              <Form.Label><h5>Catagories</h5></Form.Label>
+              <Form.Row style={{justifyContent: 'space-around'}}>
+                <Form.Group>
+                  <Dropdown>
+                    <Dropdown.Toggle>Catagory</Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      { catagoryList.map( cat => {
+                        return (
+                          <Dropdown.Item key={`cat-${cat.id}`} id={`cat-${cat.id}`} onClick={handleCatSelect} as='button'>
+                            {cat.name}
+                          </Dropdown.Item>
+                        )
+                      })}
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </Form.Group>
+                <Form.Group>
+                  <Button {...catEditing()}>Save</Button>
+                </Form.Group>
+                <Form.Group>
+                  <Button onClick={newCat}>New</Button>
+                </Form.Group>
+                <Form.Group>
+                  <Button disabled={true}>Delete</Button>
+                </Form.Group>
+              </Form.Row>
+
+              <Form.Row style={{justifyContent: 'space-around'}}>
+                <Form.Group >
+                  <Form.Label>Name</Form.Label>
+                  <Form.Control {...catEditing()} value={activeCat.name}  />
+                </Form.Group>
+                <Form.Group style={{display: 'flex', alignItems: 'center'}} >
+                  <Dropdown>
+                    <Dropdown.Toggle {...catEditing()}>Add Spec</Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      { specList.map( spec => {
+                        return (
+                          <Dropdown.Item key={`cat-spec-${spec.id}`} id={`cat-spec-${spec.id}`} as='button'>
+                            {spec.type}
+                          </Dropdown.Item>
+                        )
+                      }) }
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </Form.Group>
+
+              </Form.Row>
+              <Form.Row>
+                { activeCatSpecs.map(spec=>{
+                  return (
+                    <>
+                      <Button variant='outline-primary' size='sm' style={{marginRight: '.5rem'}}>
+                        {spec.type}
+                        <TiDelete size={20} />
+                      </Button>
+                    </>
+                  )
+                }) }
+              </Form.Row>
             </Form.Group>
           </Form>
         </Modal.Body>
