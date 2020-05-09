@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.com/DangerN/generic-small-business-site.svg?branch=master)](https://travis-ci.com/DangerN/generic-small-business-site)
 
-[Check it out!](https://generic-business.herokuapp.com/)
+[Check it out!](https://generic-business.herokuapp.com/) (Heroku might be sleepy, please be patient.)
 
 # Small Business Site
 

@@ -24,6 +24,11 @@ app.use('/', express.static('public/main/build'))
 app.use('/dashboard', express.static('public/dashboard/build'))
 app.use('/api', require('./routes')(bucket))
 
+// this should pass all routes that do not match the above to the front end
+app.get('*', function (req, res) {
+  res.sendFile(__dirname + '/public/main/build/index.html')
+})
+
 app.listen(port, () => {
   console.log(`Ready to go on port ${port}!`);
 })
