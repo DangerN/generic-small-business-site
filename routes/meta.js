@@ -51,6 +51,30 @@ router.get('/meta/spec-list', function (req, res) {
   })
 })
 
+router.post('/meta/specs/:id', function (req, res) {
+  spec.update(req.body).then(spec=>{
+    refreshMetaData().then(()=>{
+      res.json(spec)
+    })
+  })
+  .catch(err=>{
+    console.log(err);
+    res.status(500).send(err)
+  })
+})
+
+router.post('/meta/specs', function (req, res) {
+  spec.new(req.body).then(spec=>{
+    refreshMetaData().then(()=>{
+      res.json(spec)
+    })
+  })
+  .catch(err=>{
+    console.log(err);
+    res.status(500).send(err)
+  })
+})
+
 router.post('/meta', function(req, res) {
   meta.set(req.body)
   .then(newMeta=>{

@@ -6,14 +6,21 @@ import Dropdown from 'react-bootstrap/Dropdown'
 import InputGroup from 'react-bootstrap/InputGroup'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-
+import axios from 'axios'
+import { BASE_PATH } from '../../constants'
 
 const SettingsModal = props => {
   console.log(props);
-  const { show, onHide, meta, catagories, specList } = props
+  const { show, onHide, meta, catagories, specList, getMetaData } = props
   const [name, setName] = useState(meta.brandname)
   const [tagline, setTagline] = useState(meta.tagline)
-  const [activeSpec, setActiveSpec] = useState({filter: {values: "numeric", method: "range"}})
+
+  const initSpec = {type: '', unit: '', filter: {values: "numeric", method: "range"}}
+  const [activeSpec, setActiveSpec] = useState(initSpec)
+
+  const specEditing = () => {
+    return activeSpec.id ? {disabled: false} : {disabled: true}
+  }
 
   // the entire object must be sent as the meta is completely rewritten on each request.
   const handleSubmit = e => {
@@ -29,13 +36,25 @@ const SettingsModal = props => {
     }).catch(console.log)
   }
 
+  const newSpec = () => setActiveSpec({...initSpec, id: 'new'})
+
+  const saveSpec = () => {
+    const specPath = () => activeSpec.id === 'new' ? '' : `/${activeSpec.id}`
+    axios({
+      method: 'post',
+      url: `${BASE_PATH}/api/meta/specs${specPath()}`,
+      data: activeSpec
+    }).then(()=>{
+      alert('success!')
+      setActiveSpec(initSpec)
+      getMetaData()
+    }).catch(err=>{
+      console.log(err)
+      alert('failure! check the console for details')
+    })
+  }
 
   const filterDisplay = {numeric: 'Number', string: 'Text'}[activeSpec.filter.values]
-
-  // const handleSpecChange = e => {
-  //   e.preventDefault()
-  //   console.log(e.target.value);
-  // }
 
   const handleSpecChange = {
     type: e => setActiveSpec({...activeSpec, type: e.target.value}),
@@ -75,10 +94,32 @@ const SettingsModal = props => {
               <Button>Save</Button>
             </Form.Group>
             <Form.Group>
-              <Form.Label>Specifications</Form.Label>
-              <Form.Row style={{justifyContent: 'space-around'}}>
+              <Form.Label><h5>Specifications</h5></Form.Label>
+
+              <Form.Row>
+                <Form.Group as={Col}>
+                  <Form.Label>Name</Form.Label>
+                  <Form.Control {...specEditing()} onChange={handleSpecChange.type} value={activeSpec.type} />
+                </Form.Group>
+                <Form.Group as={Col}>
+                  <Form.Label>Unit</Form.Label>
+                  <Form.Control {...specEditing()} onChange={handleSpecChange.unit} value={activeSpec.unit} />
+                </Form.Group>
+                <Form.Group as={Col}>
+                  <Form.Label>Type</Form.Label>
+                  <Dropdown >
+                    <Dropdown.Toggle {...specEditing()}>{filterDisplay}</Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      <Dropdown.Item onClick={handleSpecChange.filter}>Number</Dropdown.Item>
+                      <Dropdown.Item onClick={handleSpecChange.filter} >Text</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </Form.Group>
+
+              </Form.Row>
+              <Form.Row style={{justifyContent: 'space-between'}}>
                 <Dropdown>
-                  <Dropdown.Toggle>Select Spec</Dropdown.Toggle>
+                  <Dropdown.Toggle >Select Spec</Dropdown.Toggle>
                   <Dropdown.Menu >
                     { specList.map(spec=>{
                       return (
@@ -89,31 +130,9 @@ const SettingsModal = props => {
                     })}
                   </Dropdown.Menu>
                 </Dropdown>
-                <Button>Save</Button>
-                <Button>New</Button>
-                <Button>Delete</Button>
-
-              </Form.Row>
-              <Form.Row>
-                <Form.Group as={Col}>
-                  <Form.Label>Name</Form.Label>
-                  <Form.Control onChange={handleSpecChange.type} value={activeSpec.type} />
-                </Form.Group>
-                <Form.Group as={Col}>
-                  <Form.Label>Unit</Form.Label>
-                  <Form.Control onChange={handleSpecChange.unit} value={activeSpec.unit} />
-                </Form.Group>
-                <Form.Group as={Col}>
-                  <Form.Label>Type</Form.Label>
-                  <Dropdown>
-                    <Dropdown.Toggle>{filterDisplay}</Dropdown.Toggle>
-                    <Dropdown.Menu>
-                      <Dropdown.Item onClick={handleSpecChange.filter}>Number</Dropdown.Item>
-                      <Dropdown.Item onClick={handleSpecChange.filter} >Text</Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </Form.Group>
-
+                <Button onClick={saveSpec} {...specEditing()}>Save</Button>
+                <Button onClick={newSpec}>New</Button>
+                <Button disabled={true}>Delete</Button>
               </Form.Row>
             </Form.Group>
             <Form.Group>

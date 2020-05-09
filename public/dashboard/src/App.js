@@ -25,6 +25,17 @@ function App() {
     .then(({data})=>metaDispatch({type: 'catagoryList', payload: data}))
   },[storeDispatch])
 
+  const getMetaData = () => {
+    axios(`${BASE_PATH}/api/store/products`)
+    .then(({data})=>storeDispatch({type: 'setProducts', payload: data}))
+    axios(`${BASE_PATH}/api/meta`)
+    .then(({data})=>metaDispatch({type: 'dumpMeta', payload: data}))
+    axios(`${BASE_PATH}/api/meta/spec-list`)
+    .then(({data})=>metaDispatch({type: 'specList', payload: data}))
+    axios(`${BASE_PATH}/api/meta/catagory-list`)
+    .then(({data})=>metaDispatch({type: 'catagoryList', payload: data}))
+  }
+
   // ensure data is loaded before rendering
   useEffect(() => {
     metaState.meta && metaState.specList && metaState.catagoryList && setLoaded(true)
@@ -58,6 +69,7 @@ function App() {
       <Tabs defaultActiveKey="store">
         <Tab eventKey="store" title="Store">
           <StoreTab
+            getMetaData={getMetaData}
             loaded={loaded}
             updateProduct={updateProduct}
             {...storeState}
