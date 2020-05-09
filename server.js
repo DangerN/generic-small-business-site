@@ -22,7 +22,7 @@ app.use(bodyParser.raw({type: 'application/octet-stream', limit: '4mb'}))
 
 app.use('/', express.static('public/main/build'))
 app.use('/dashboard', express.static('public/dashboard/build'))
-app.use('/api', require('./routes/api')(bucket))
+app.use('/api', require('./routes')(bucket))
 
 app.listen(port, () => {
   console.log(`Ready to go on port ${port}!`);

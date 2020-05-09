@@ -2,7 +2,7 @@ require('dotenv').config()
 const request = require('supertest');
 const sinon = require('sinon');
 const { fakePG } = require('./helpers');
-const api = require('../routes/api')({})
+const api = require('../routes')({})
 const express = require('express');
 const app = express();
 
