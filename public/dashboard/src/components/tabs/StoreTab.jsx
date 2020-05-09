@@ -4,9 +4,12 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import Table from 'react-bootstrap/Table'
 import ProductModal from './ProductModal'
+import SettingModal from './SettingModal'
 
 const StoreTab = props => {
   const [ showModal, setModal ] = useState(false)
+  const [ settings, setSettings ] = useState(false)
+  const [ newProd, setNewProd ] = useState(false)
   const [ workingProduct, setWorkingProduct ] = useState({})
 
   const handlePoductSelect = product => {
@@ -37,8 +40,10 @@ const StoreTab = props => {
   return (
     <Row>
       <ProductModal updateProduct={props.updateProduct} show={showModal} workingProduct={workingProduct} setWorkingProduct={setWorkingProduct} onHide={handleModalClose}/>
-      <Col xs={2}>
+      { props.meta.brandname ? <SettingModal show={settings} onHide={()=>setSettings(false)} {...props.meta}/> : null}
+      <Col xs={2} style={{justifyContent: 'center'}}>
         <Button onClick={()=>setModal(true)}>Add Product</Button>
+        <Button onClick={()=>setSettings(true)}>Store Settings</Button>
       </Col>
       <Col xs={10}>
         <Table>

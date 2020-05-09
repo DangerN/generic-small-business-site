@@ -5,10 +5,10 @@ import { Navbar, Nav, Form, FormControl, Button, InputGroup } from 'react-bootst
 import useColor from '../hooks/useColor'
 
 const Navi = props => {
-  const { searchTerm, dispatch, brandName, brandStyle } = props
+  const { searchTerm, dispatch, brandname, brandstyle } = props
   return (
     <Navbar bg="light" expand="lg" style={{height: '8vh', zIndex: '100'}}>
-      <Navbar.Brand to='/' as={Link} style={brandStyle}>{brandName}</Navbar.Brand>
+      <Navbar.Brand to='/' as={Link} style={brandstyle}>{brandname}</Navbar.Brand>
       <Navbar.Toggle style={{zIndex: '101'}} />
       <Navbar.Collapse id='basic-navbar-nav' style={{backgroundColor: 'inherit'}}>
         <Nav className='mr-auto'>

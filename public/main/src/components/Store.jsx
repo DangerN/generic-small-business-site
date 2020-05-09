@@ -12,6 +12,7 @@ const Store = props => {
   const { products, dispatch } = props
   // eslint-disable-next-line
   let { path, url } = useRouteMatch()
+
   return (
     <Row>
       <Route exact path={path}>
@@ -21,7 +22,7 @@ const Store = props => {
         <Row style={{height: '92vh', overflow: 'scroll'}}>
           <Switch>
             <Route exact path={path}>
-              { products.map(ProductCard) }
+              { products && products.map(ProductCard) }
             </Route>
             <Route path={`${path}/:productId`}>
               {products.length ? <Product {...props} /> : "spinner"}

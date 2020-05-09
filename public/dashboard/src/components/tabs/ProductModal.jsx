@@ -15,7 +15,6 @@ const ProductModal = props => {
     setWorkingProduct({...workingProduct, [field]: event.target.value})
   }
 
-  console.log(workingProduct);
   return (
     <Modal show={show} onHide={onHide}>
       <Modal.Header closeButton>
