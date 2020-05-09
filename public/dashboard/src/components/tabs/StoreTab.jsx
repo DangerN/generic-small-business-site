@@ -12,6 +12,8 @@ const StoreTab = props => {
   const [ newProd, setNewProd ] = useState(false)
   const [ workingProduct, setWorkingProduct ] = useState({})
 
+  console.log(props);
+
   const handlePoductSelect = product => {
     setWorkingProduct(product)
     setModal(true)
@@ -40,7 +42,7 @@ const StoreTab = props => {
   return (
     <Row>
       <ProductModal updateProduct={props.updateProduct} show={showModal} workingProduct={workingProduct} setWorkingProduct={setWorkingProduct} onHide={handleModalClose}/>
-      { props.meta.brandname ? <SettingModal show={settings} onHide={()=>setSettings(false)} {...props.meta}/> : null}
+      {props.loaded ? <SettingModal show={settings} onHide={()=>setSettings(false)} {...props} /> : null}
       <Col xs={2} style={{justifyContent: 'center'}}>
         <Button onClick={()=>setModal(true)}>Add Product</Button>
         <Button onClick={()=>setSettings(true)}>Store Settings</Button>

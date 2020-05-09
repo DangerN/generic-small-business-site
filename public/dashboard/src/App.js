@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import Container from 'react-bootstrap/Container'
@@ -12,13 +12,25 @@ const BASE_PATH = process.env.NODE_ENV === 'production' ? '' : 'http://localhost
 function App() {
   const [ storeState, storeDispatch ] = useStore()
   const [ metaState, metaDispatch ] = useMeta()
+  const [ loaded, setLoaded ] = useState(false)
 
   useEffect(() => {
     axios(`${BASE_PATH}/api/store/products`)
     .then(({data})=>storeDispatch({type: 'setProducts', payload: data}))
     axios(`${BASE_PATH}/api/meta`)
     .then(({data})=>metaDispatch({type: 'dumpMeta', payload: data}))
+    axios(`${BASE_PATH}/api/meta/spec-list`)
+    .then(({data})=>metaDispatch({type: 'specList', payload: data}))
+    axios(`${BASE_PATH}/api/meta/catagory-list`)
+    .then(({data})=>metaDispatch({type: 'catagoryList', payload: data}))
   },[storeDispatch])
+
+  // ensure data is loaded before rendering
+  useEffect(() => {
+    metaState.meta && metaState.specList && metaState.catagoryList && setLoaded(true)
+  },[metaState])
+
+
 
   const updateProduct = product => {
     axios({
@@ -45,7 +57,14 @@ function App() {
     <Container>
       <Tabs defaultActiveKey="store">
         <Tab eventKey="store" title="Store">
-          <StoreTab updateProduct={updateProduct} {...storeState} meta={{...metaState, updateMeta}}/>
+          <StoreTab
+            loaded={loaded}
+            updateProduct={updateProduct}
+            {...storeState}
+            updateMeta={updateMeta}
+            {...metaState}
+
+          />
         </Tab>
         <Tab eventKey="messages" title="Messages">
           Yeet

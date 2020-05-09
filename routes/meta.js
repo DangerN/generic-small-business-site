@@ -1,24 +1,62 @@
 const router = require('express').Router()
-const {meta} = require('../models');
+const {meta, catagory, spec} = require('../models');
 
-let metaCache
+let metaCache = {}
 
 // shut down server if no/bad db connection
-meta.get().then(meta=>metaCache=meta)
-.catch(err=>{
-  console.log(err);
+const refreshMetaData = () => {
+  return new Promise(async function(resolve, reject) {
+    await meta.get().then(meta=>{
+      metaCache = {...metaCache, meta}
+    })
+    .catch(reject)
+
+    await catagory.getCatagoriesWithSpecs().then(catagories=>{
+      metaCache = {...metaCache, catagories: catagories}
+    })
+    .catch(reject)
+
+    resolve(metaCache)
+  })
+}
+
+refreshMetaData().catch(err=>{
+  console.log(err)
   process.exit
 })
+
+
 
 router.get('/meta', function (req, res) {
   res.json(metaCache)
 })
 
+router.get('/meta/catagory-list', function (req, res) {
+  catagory.list().then(cats=>{
+    res.json(cats)
+  })
+  .catch(err=>{
+    console.log(err);
+    res.status(500).send(err)
+  })
+})
+
+router.get('/meta/spec-list', function (req, res) {
+  spec.list().then(specs=>{
+    res.json(specs)
+  })
+  .catch(err=>{
+    console.log(err);
+    res.status(500).send(err)
+  })
+})
+
 router.post('/meta', function(req, res) {
   meta.set(req.body)
   .then(newMeta=>{
-    metaCache = newMeta
-    res.json(newMeta)
+    refreshMetaData().then(meta=>{
+      res.json(meta)
+    })
   })
   .catch(err=>{
     console.log(err);

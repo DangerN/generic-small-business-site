@@ -3,23 +3,21 @@ import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Dropdown from 'react-bootstrap/Dropdown'
-import DropdownButton from 'react-bootstrap/DropdownButton'
 import InputGroup from 'react-bootstrap/InputGroup'
 
 const SettingsModal = props => {
-  const { show, onHide } = props
-  const [name, setName] = useState(props.brandname)
-  const [tagline, setTagline] = useState(props.tagline)
-  const [catagories, setCatagories ] = useState(props.catagories)
-  const [ selectCat, setSelectCat ] = useState('')
-  console.log(catagories);
+  console.log(props);
+  const { show, onHide, meta, catagories, specList } = props
+  const [name, setName] = useState(meta.brandname)
+  const [tagline, setTagline] = useState(meta.tagline)
+  const [activeSpec, setActiveSpec] = useState({})
 
   // the entire object must be sent as the meta is completely rewritten on each request.
   const handleSubmit = e => {
+    console.log('post attempt');
     e.preventDefault()
     props.updateMeta({
       brandname: name,
-      catagories: catagories,
       brandstyle: props.brandstyle,
       tagline: tagline
     }).then(()=>{
@@ -28,45 +26,47 @@ const SettingsModal = props => {
     }).catch(console.log)
   }
 
-  const handleCatChange = e => {
-    setSelectCat(e.target.value)
-    setCatagories(prevCats=>{
-      let newCats = prevCats
-      newCats[e.target.value] = prevCats[selectCat]
-      delete newCats[selectCat]
-      return newCats
-    })
-  }
-
-  useEffect(() => {
-
-  },[selectCat])
-
   return (
-    <Modal show={show} onHide={onHide}>
+    <Modal show={true} onHide={onHide}>
       <Modal.Header closeButton>
-        <Modal.Title>Settings</Modal.Title>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
             <Form.Group>
               <Form.Label>Brand Name</Form.Label>
-              <Form.Control value={name} onChange={e=>{setName(e.target.value)}} />
+              <InputGroup>
+                <Form.Control value={name} />
+                <InputGroup.Append>
+                <Button>Save</Button>
+                </InputGroup.Append>
+              </InputGroup>
             </Form.Group>
             <Form.Group>
               <Form.Label>Tagline</Form.Label>
-              <Form.Control as='textarea' value={tagline} onChange={e=>{setTagline(e.target.value)}} />
+              <Form.Control as='textarea' value={tagline} />
+              <Button>Save</Button>
             </Form.Group>
             <Form.Group>
-              <Form.Label>Catagories</Form.Label>
-              <Form.Control value={selectCat} onChange={handleCatChange}/>
+              <Form.Label>Specifications</Form.Label>
               <Dropdown>
-                <Dropdown.Toggle>Catagory</Dropdown.Toggle>
-                <Dropdown.Menu style={{overflow: 'hidden'}}>
-                  { Object.keys(catagories).map(cat => <Dropdown.Item onClick={()=>setSelectCat(cat)}>{cat}</Dropdown.Item>) }
+                <Dropdown.Toggle>Select Spec</Dropdown.Toggle>
+                <Dropdown.Menu>
+                  { specList.map(spec=>{
+                    return (
+                      <Dropdown.Item key={spec.id} as='button'>
+                        {spec.type}
+                      </Dropdown.Item>
+                    )
+                  })}
                 </Dropdown.Menu>
               </Dropdown>
+              <Form.Control as='textarea' value={tagline} />
+              <Button>Save</Button>
             </Form.Group>
-            <Button type='submit'>Save</Button>
+            <Form.Group>
+              <Form.Label>catagories</Form.Label>
+              <Form.Control as='textarea' value={tagline} />
+              <Button>Save</Button>
+            </Form.Group>
           </Form>
         </Modal.Body>
       </Modal.Header>
