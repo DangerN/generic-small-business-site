@@ -7,6 +7,7 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Badge from 'react-bootstrap/Badge'
+import Alert from 'react-bootstrap/Alert'
 import axios from 'axios'
 import { TiDelete } from 'react-icons/ti'
 import { BASE_PATH } from '../../constants'
@@ -15,6 +16,26 @@ import { BASE_PATH } from '../../constants'
 const SettingsModal = props => {
   console.log(props);
   const { show, onHide, meta, catagories, specList, getMetaData, catagoryList } = props
+
+  const [ alert, setAlert ] = useState({props: {show: false}})
+  const alertDeets = {
+    success: {
+      text: 'Success!',
+      props: {
+        show: true,
+        variant: 'success'
+      }
+    },
+    failure: {
+      text: 'Failed to update. Dunno lol.!',
+      props: {
+        show: true,
+        variant: 'danger'
+      }
+    },
+    autoClose: () => setTimeout(()=>setAlert({props: {show: false}}),3000)
+  }
+
   const [name, setName] = useState(meta.brandname)
   const [tagline, setTagline] = useState(meta.tagline)
 
@@ -26,12 +47,48 @@ const SettingsModal = props => {
   const initCatSpecs = []
   const [activeCatSpecs, setActiveCatSpecs] = useState(initCatSpecs)
 
-  const newCat = () => setActiveCat({...initCat, id: 'new', name: 'New Catagory'})
+  const newCat = () => {
+    setActiveCat({...initCat, id: 'new', name: 'New Catagory'})
+    setActiveCatSpecs(initCatSpecs)
+  }
 
   const handleCatSelect = e => {
     e.preventDefault()
     setActiveCat(catagoryList.find(cat=>`cat-${cat.id}` === e.target.id))
-    setActiveCatSpecs([...catagories.find(cat=>`cat-${cat.id}` === e.target.id).catagory_specs])
+    setActiveCatSpecs(catagories.find(cat=>`cat-${cat.id}` === e.target.id).catagory_specs)
+  }
+
+  const handleCatChange = {
+    name: e => setActiveCat({...activeCat, name: e.target.value}),
+    addSpec: spec => setActiveCatSpecs([...activeCatSpecs, spec]),
+    removeSpec: index => {
+      const newCatSpecs = [...activeCatSpecs]
+      newCatSpecs.splice(index, 1)
+      setActiveCatSpecs(newCatSpecs)
+    }
+  }
+
+  const saveCat = () => {
+    const catPath = () => activeCat.id === 'new' ? '' : `/${activeCat.id}`
+    const catData = {
+      catagory: activeCat,
+      specs: activeCatSpecs
+    }
+    axios({
+      method: 'post',
+      url: `${BASE_PATH}/api/meta/catagories${catPath()}`,
+      data: catData
+    }).then(()=>{
+      setAlert(alertDeets.success)
+      alertDeets.autoClose()
+      setActiveCat(initCat)
+      setActiveCatSpecs(initCatSpecs)
+      getMetaData()
+    }).catch(err=>{
+      console.log(err)
+      setAlert(alertDeets.failure)
+      alertDeets.autoClose()
+    })
   }
 
   const specEditing = () => {
@@ -51,12 +108,14 @@ const SettingsModal = props => {
       url: `${BASE_PATH}/api/meta/specs${specPath()}`,
       data: activeSpec
     }).then(()=>{
-      alert('success!')
+      setAlert(alertDeets.success)
+      alertDeets.autoClose()
       setActiveSpec(initSpec)
       getMetaData()
     }).catch(err=>{
       console.log(err)
-      alert('failure! check the console for details')
+      setAlert(alertDeets.failure)
+      alertDeets.autoClose()
     })
   }
 
@@ -66,7 +125,6 @@ const SettingsModal = props => {
     type: e => setActiveSpec({...activeSpec, type: e.target.value}),
     unit: e => setActiveSpec({...activeSpec, unit: e.target.value}),
     filter: e => {
-      e.preventDefault()
       const filterSetting = {
         Number: {values: "numeric", method: "range"},
         Text: {values: "string", method: "list"}
@@ -80,24 +138,46 @@ const SettingsModal = props => {
     setActiveSpec(specList.find(spec=>`spec-${spec.id}` === e.target.id))
   }
 
+  const saveNameAndTag = () => {
+    axios({
+      method: 'post',
+      url: `${BASE_PATH}/api/meta`,
+      data: {
+        brandname: name,
+        brandstyle: meta.brandstyle,
+        tagline: tagline
+      }
+    }).then(()=>{
+      setAlert(alertDeets.success)
+      alertDeets.autoClose()
+      getMetaData()
+    }).catch(err=>{
+      setAlert(alertDeets.failure)
+      alertDeets.autoClose()
+    })
+  }
+
   return (
-    <Modal show={true} size='lg' onHide={onHide}>
+    <Modal show={show} size='lg' onHide={onHide}>
       <Modal.Header closeButton>
         <Modal.Body>
+          <Alert {...alert.props} >{alert.text}</Alert>
           <Form onSubmit={e=>e.preventDefault()}>
             <Form.Group>
-              <Form.Label>Brand Name</Form.Label>
+              <Form.Label><h5>Brand Name</h5></Form.Label>
               <InputGroup>
-                <Form.Control value={name} />
+                <Form.Control value={name} onChange={e=>setName(e.target.value)} />
                 <InputGroup.Append>
-                <Button>Save</Button>
+                  <Button onClick={saveNameAndTag}>Save</Button>
                 </InputGroup.Append>
               </InputGroup>
             </Form.Group>
             <Form.Group>
-              <Form.Label>Tagline</Form.Label>
-              <Form.Control as='textarea' value={tagline} />
-              <Button>Save</Button>
+              <Form.Label><h5>Tagline</h5></Form.Label>
+              <Form.Control as='textarea' style={{minHeight: '7rem'}} onChange={e=>{setTagline(e.target.value)}} value={tagline} />
+              <Form.Group style={{display: 'flex', justifyContent: 'flex-end', marginTop: '.5rem'}}>
+                <Button onClick={saveNameAndTag}>Save</Button>
+              </Form.Group>
             </Form.Group>
             <Form.Group>
               <Form.Label><h5>Specifications</h5></Form.Label>
@@ -159,7 +239,7 @@ const SettingsModal = props => {
                   </Dropdown>
                 </Form.Group>
                 <Form.Group>
-                  <Button {...catEditing()}>Save</Button>
+                  <Button onClick={saveCat} {...catEditing()}>Save</Button>
                 </Form.Group>
                 <Form.Group>
                   <Button onClick={newCat}>New</Button>
@@ -172,7 +252,7 @@ const SettingsModal = props => {
               <Form.Row style={{justifyContent: 'space-around'}}>
                 <Form.Group >
                   <Form.Label>Name</Form.Label>
-                  <Form.Control {...catEditing()} value={activeCat.name}  />
+                  <Form.Control {...catEditing()} value={activeCat.name} onChange={handleCatChange.name} />
                 </Form.Group>
                 <Form.Group style={{display: 'flex', alignItems: 'center'}} >
                   <Dropdown>
@@ -180,7 +260,7 @@ const SettingsModal = props => {
                     <Dropdown.Menu>
                       { specList.map( spec => {
                         return (
-                          <Dropdown.Item key={`cat-spec-${spec.id}`} id={`cat-spec-${spec.id}`} as='button'>
+                          <Dropdown.Item key={`cat-spec-${spec.id}`} id={`cat-spec-${spec.id}`} onClick={()=>handleCatChange.addSpec(spec)} as='button'>
                             {spec.type}
                           </Dropdown.Item>
                         )
@@ -191,10 +271,10 @@ const SettingsModal = props => {
 
               </Form.Row>
               <Form.Row>
-                { activeCatSpecs.map(spec=>{
+                { activeCatSpecs.map((spec, i)=>{
                   return (
                     <>
-                      <Button variant='outline-primary' size='sm' style={{marginRight: '.5rem'}}>
+                      <Button variant='outline-primary' key={`spec-btn-${spec.id}`} size='sm' style={{marginRight: '.5rem'}} onClick={()=>handleCatChange.removeSpec(i)}>
                         {spec.type}
                         <TiDelete size={20} />
                       </Button>

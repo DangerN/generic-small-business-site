@@ -12,7 +12,11 @@ const refreshMetaData = () => {
     .catch(reject)
 
     await catagory.getCatagoriesWithSpecs().then(catagories=>{
-      metaCache = {...metaCache, catagories: catagories}
+      // this is a hokey fix to clean the null entries from catagories that arent associated with any spec
+      let cleanCats = catagories.map(cat=>{
+        return cat.catagory_specs[0].id ? cat : {...cat, catagory_specs: []}
+      })
+      metaCache = {...metaCache, catagories: cleanCats}
     })
     .catch(reject)
 
@@ -74,6 +78,34 @@ router.post('/meta/specs', function (req, res) {
     res.status(500).send(err)
   })
 })
+
+
+
+router.post('/meta/catagories/:id', function (req, res) {
+  catagory.updateSpecs(req.body).then(()=>{
+    refreshMetaData().then(()=>{
+      res.send()
+    })
+  })
+  .catch(err=>{
+    console.log(err);
+    res.status(500).send(err)
+  })
+})
+
+router.post('/meta/catagories', function (req, res) {
+  catagory.new(req.body).then(()=>{
+    refreshMetaData().then(()=>{
+      res.send()
+    })
+  })
+  .catch(err=>{
+    console.log(err);
+    res.status(500).send(err)
+  })
+})
+
+
 
 router.post('/meta', function(req, res) {
   meta.set(req.body)
