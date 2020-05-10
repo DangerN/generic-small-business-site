@@ -140,4 +140,20 @@ insert into meta (brandname, brandstyle, tagline) values
 ('Longboard Eternal', '{"fontFamily": "\"Permanent Marker\", cursive"}',
 'Rail slide Bucky Lasek stalefish heel flip frigid air hospital flip manual Kevin Harris. Nose 180 mute-air nosepicker lien air goofy footed berm. Hospital flip hurricane rail slide deck kidney tic-tac nose-bump Alan Gelfand. Skate or die slide crailtap rad Supersonic Skate Camp hospital flip shinner front foot impossible. Lip Jason Wilson rocket air manual chicken wing coping casper fast plant. Cess slide backside nollie nose bump switch boardslide coping. Nosebone Jerry Hsu grind betty bank hospital flip 180 carve. Casper slide air hard flip ollie hole yeah Alan Gelfand salad grind regular footed. Half-flip casper coping casper slide wall ride boned out chicken wing. Vert wax stalefish trucks boneless boned out ollie.' );
 
+
+drop table if exists messages;
+
+create table messages (
+  id serial,
+  name text,
+  email text,
+  subject text,
+  body text,
+  created_at timestamptz not null default now()
+);
+
+
+insert into messages (name, email, subject, body)
+values ('Joe', 'joe@gmail.com', 'First Message', 'This is the first message. Yay!');
+
 select * from users;

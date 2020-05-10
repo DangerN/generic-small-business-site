@@ -5,6 +5,7 @@ module.exports = (bucket) => {
   router.use(require('./meta'))
   router.use(require('./store'))
   router.use(require('./blog'))
+  router.use(require('./messages'))
   router.use(require('./images')(bucket))
 
   router.all('*', function (req, res) {
