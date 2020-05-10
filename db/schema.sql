@@ -154,6 +154,8 @@ create table messages (
 
 
 insert into messages (name, email, subject, body)
-values ('Joe', 'joe@gmail.com', 'First Message', 'This is the first message. Yay!');
+values
+('Joe', 'joe@gmail.com', 'First Message', 'This is the first message. Yay!'),
+('Bob', 'bob@gmail.com', 'Second Message', 'This is the second message. Yay!');
 
 select * from users;
