@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
-import FormControl from 'react-bootstrap/FormControl'
 import InputGroup from 'react-bootstrap/InputGroup'
-import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Dropdown from 'react-bootstrap/Dropdown'
 import Alert from 'react-bootstrap/Alert'
@@ -12,18 +10,12 @@ import { BASE_PATH } from '../../constants'
 import axios from 'axios'
 
 const ProductModal = props => {
-  const {workingProduct, show, onHide, updateProduct, catagories, catagoryList, getMetaData, setWorkingProduct, initWorkingProduct} = props
-  const [ edit, setEdit ] = useState(false)
+  const {workingProduct, show, onHide, catagories, getMetaData, setWorkingProduct, initWorkingProduct} = props
 
   const [ imgCanUp, setImgCanUp ] = useState(true)
 
   const [ product, setProduct ] = useState(workingProduct)
-  console.log(props);
-  console.log('product',product);
   const [ activeCat, setActiveCat ] = useState({})
-  console.log('activeCat', activeCat);
-
-  const [image, setImage] = useState()
 
   const [ alert, setAlert ] = useState({props: {show: false}})
   const alertDeets = {
@@ -47,11 +39,13 @@ const ProductModal = props => {
   useEffect(() => {
     setProduct({
       ...workingProduct,
+      // eslint-disable-next-line
       price: parseFloat(/[\d\.]+/.exec(workingProduct.price)),
+      // eslint-disable-next-line
       ship_cost: parseFloat(/[\d\.]+/.exec(workingProduct.ship_cost)),
     })
     workingProduct.catagory && setActiveCat(catagories.find(cat=>cat.id === workingProduct.catagory))
-  },[workingProduct])
+  },[workingProduct, catagories])
 
   const deleteProduct = () => {
     axios.delete(`${BASE_PATH}/api/store/products/${product.id}`)
@@ -88,7 +82,6 @@ const ProductModal = props => {
   }
 
   const specsList = () => {
-    console.log(activeCat);
     if (!product.specs_values) { return }
     return activeCat.catagory_specs.map(catSpec=>{
       return (
@@ -121,10 +114,7 @@ const ProductModal = props => {
       setActiveCat(cat)
     },
     spec: (e, type) => {
-      console.log(e.target.value);
-      console.log(type);
       const newPoduct = {...product, specs_values:{...product.specs_values ,[type]: e.target.value}}
-      console.log(newPoduct);
       setProduct(newPoduct)
     },
     media_links: link => setProduct({...product, media_links: [...product.media_links, link]})

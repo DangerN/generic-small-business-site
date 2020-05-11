@@ -1,11 +1,6 @@
 const router = require('express').Router()
 const {product} = require('../models');
 
-router.post('/store', function (req, res) {
-  console.log(req.body)
-  res.json()
-})
-
 router.get('/store/products', function (req, res) {
   product.getAll()
   .then(products=>{

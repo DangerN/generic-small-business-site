@@ -9,7 +9,6 @@ import SettingModal from './SettingModal'
 const StoreTab = props => {
   const [ showModal, setModal ] = useState(false)
   const [ settings, setSettings ] = useState(false)
-  const [ newProd, setNewProd ] = useState(false)
 
   const initWorkingProduct = {
     id: 'new',
@@ -22,8 +21,6 @@ const StoreTab = props => {
   }
 
   const [ workingProduct, setWorkingProduct ] = useState(initWorkingProduct)
-
-  console.log(props);
 
   const handlePoductSelect = product => {
     setWorkingProduct(product)

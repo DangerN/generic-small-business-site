@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import Container from 'react-bootstrap/Container'
@@ -17,33 +17,35 @@ function App() {
   const [ messagesState, messagesDispatch ] = useMessages()
   const [ loaded, setLoaded ] = useState(false)
 
+  const getMetaData = useCallback(
+    () => {
+      axios(`${BASE_PATH}/api/store/products`)
+      .then(({data})=>storeDispatch({type: 'setProducts', payload: data}))
+      axios(`${BASE_PATH}/api/meta`)
+      .then(({data})=>metaDispatch({type: 'dumpMeta', payload: data}))
+      axios(`${BASE_PATH}/api/meta/spec-list`)
+      .then(({data})=>metaDispatch({type: 'specList', payload: data}))
+      axios(`${BASE_PATH}/api/meta/catagory-list`)
+      .then(({data})=>metaDispatch({type: 'catagoryList', payload: data}))
+    },
+    [storeDispatch, metaDispatch]
+  )
+
+  const getMessages = useCallback(
+    () => {
+      axios(`${BASE_PATH}/api/messages`)
+      .then(({data})=>messagesDispatch({type: 'dumpMessages', payload: data}))
+    },
+    [messagesDispatch]
+  )
+
+
+
+
   useEffect(() => {
-    axios(`${BASE_PATH}/api/store/products`)
-    .then(({data})=>storeDispatch({type: 'setProducts', payload: data}))
-    axios(`${BASE_PATH}/api/meta`)
-    .then(({data})=>metaDispatch({type: 'dumpMeta', payload: data}))
-    axios(`${BASE_PATH}/api/meta/spec-list`)
-    .then(({data})=>metaDispatch({type: 'specList', payload: data}))
-    axios(`${BASE_PATH}/api/meta/catagory-list`)
-    .then(({data})=>metaDispatch({type: 'catagoryList', payload: data}))
+    getMetaData()
     getMessages()
-  },[storeDispatch])
-
-  const getMetaData = () => {
-    axios(`${BASE_PATH}/api/store/products`)
-    .then(({data})=>storeDispatch({type: 'setProducts', payload: data}))
-    axios(`${BASE_PATH}/api/meta`)
-    .then(({data})=>metaDispatch({type: 'dumpMeta', payload: data}))
-    axios(`${BASE_PATH}/api/meta/spec-list`)
-    .then(({data})=>metaDispatch({type: 'specList', payload: data}))
-    axios(`${BASE_PATH}/api/meta/catagory-list`)
-    .then(({data})=>metaDispatch({type: 'catagoryList', payload: data}))
-  }
-
-  const getMessages = () => {
-    axios(`${BASE_PATH}/api/messages`)
-    .then(({data})=>messagesDispatch({type: 'dumpMessages', payload: data}))
-  }
+  },[getMessages, getMetaData])
 
   // ensure data is loaded before rendering
   useEffect(() => {

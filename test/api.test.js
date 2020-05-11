@@ -59,15 +59,6 @@ describe('store', () => {
   after(() => {
     stub.restore()
   })
-  describe("GET /api/store", () => {
-    it('returns JSON', function (done) {
-      request(app)
-        .get('/api/store')
-        .set('Accept', 'application/json')
-        .expect('Content-Type', /json/)
-        .expect(200, done);
-    })
-  })
   describe("GET /api/store/products", () => {
     it('returns JSON', function (done) {
       request(app)
