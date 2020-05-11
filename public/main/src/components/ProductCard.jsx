@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import React from 'react'
 import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
 import { Link } from 'react-router-dom'
 import useColor from '../hooks/useColor'
-import { BASE_PATH } from '../constants'
 
 const ProductCard = props => {
   const { id, name, description, price, media_links } = props

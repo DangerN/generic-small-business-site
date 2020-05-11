@@ -37,8 +37,6 @@ function App() {
   },[dispatch, metaDispatch])
 
   useEffect(() => {
-    console.log(metaState);
-    console.log(state);
     metaState.meta && state.products && setLoaded(true)
   }, [state, metaState])
 

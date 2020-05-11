@@ -6,11 +6,11 @@ import { shallow } from 'enzyme'
 
 describe('<Navi />', () => {
   it('renders without crashing', () => {
-    shallow(<Navi />)
+    shallow(<Navi meta={{"":""}} />)
   })
 
   it('renders nav links', () => {
-    const wrapper = shallow(<Navi />)
+    const wrapper = shallow(<Navi meta={{"":""}} />)
     wrapper.find(Navbar.Brand).should.have.lengthOf(1)
     wrapper.find(Nav.Link).should.have.lengthOf(4)
   })
