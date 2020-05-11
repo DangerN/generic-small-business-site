@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Route, Switch, BrowserRouter as Router } from 'react-router-dom'
 import axios from 'axios'
 import Container from 'react-bootstrap/Container'
@@ -27,6 +27,7 @@ const BACK_IMG = {
 function App() {
   const [ state, dispatch ] = useStore()
   const [ metaState, metaDispatch ] = useMeta()
+  const [ loaded, setLoaded ] = useState(false)
 
   useEffect(() => {
     axios(`${BASE_PATH}/api/meta`)
@@ -35,14 +36,20 @@ function App() {
     .then(({data})=>dispatch({type: 'setProducts', payload: data}))
   },[dispatch, metaDispatch])
 
+  useEffect(() => {
+    console.log(metaState);
+    console.log(state);
+    metaState.meta && state.products && setLoaded(true)
+  }, [state, metaState])
+
   return (
     <div className="App" style={BACK_IMG}>
       <Router>
-        <Navi {...state} {...metaState} dispatch={dispatch} />
+        { loaded ? <Navi {...state} {...metaState} dispatch={dispatch} /> : null}
         <Container style={{height: '92vh'}}>
           <Switch>
             <Route exact path='/'>
-              <Landing {...state} {...metaState} dispatch={dispatch} />
+              { loaded ? <Landing {...state} {...metaState} dispatch={dispatch} /> : null}
             </Route>
             <Route exact path='/about'>
               <About />

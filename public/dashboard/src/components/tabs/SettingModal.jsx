@@ -14,7 +14,6 @@ import { BASE_PATH } from '../../constants'
 
 
 const SettingsModal = props => {
-  console.log(props);
   const { show, onHide, meta, catagories, specList, getMetaData, catagoryList } = props
 
   const [ alert, setAlert ] = useState({props: {show: false}})
@@ -159,7 +158,7 @@ const SettingsModal = props => {
 
   return (
     <Modal show={show} size='lg' onHide={onHide}>
-      <Modal.Header closeButton>
+      <Modal.Header closeButton />
         <Modal.Body>
           <Alert {...alert.props} >{alert.text}</Alert>
           <Form onSubmit={e=>e.preventDefault()}>
@@ -285,7 +284,6 @@ const SettingsModal = props => {
             </Form.Group>
           </Form>
         </Modal.Body>
-      </Modal.Header>
     </Modal>
   )
 }

@@ -7,7 +7,6 @@ import axios from 'axios'
 import { BASE_PATH } from '../constants'
 
 const MessageTab = props => {
-  console.log(props);
   const {messages, loaded, getMessages} = props
   const [showMessage, setShowMessage] = useState(false)
   const [currentMess, setCurrentMess] = useState({})

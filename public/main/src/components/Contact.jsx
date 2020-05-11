@@ -7,7 +7,6 @@ import Alert from 'react-bootstrap/Alert'
 import useControlledContact from '../hooks/useControlledContact'
 import useColor from '../hooks/useColor'
 
-
 const Contact = props => {
   const { name, subject, email, message, submit, alert } = useControlledContact()
   return (
