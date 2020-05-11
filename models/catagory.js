@@ -12,9 +12,16 @@ module.exports = {
   },
   new: (data) => {
     return new Promise(function(resolve, reject) {
-      db.query('insert catagories (name) values ($1)', [data.name])
+      db.query('insert into catagories (name) values ($1) returning *', [data.catagory.name])
       .then(({rows})=>{
-        resolve(rows[0])
+        const catID = rows[0].id
+        data.specs.map((spec, i)=> {
+          db.query('insert into catagories_specs (catagory_id, spec_id) values ($1, $2)', [catID, spec.id])
+          .then(()=>{
+            if (i === data.specs.length - 1) {resolve()}
+          })
+          .catch(reject)
+        })
       })
       .catch(reject)
     });
@@ -29,20 +36,17 @@ module.exports = {
       .catch(reject)
     });
   },
-  addSpec: (data) => {
+  updateSpecs: (data) => {
+    const catID = data.catagory.id
     return new Promise(function(resolve, reject) {
-      db.query('insert into catagories_specs (catagory_id, spec_id) values ($1, $2) returning *', [data.catagory_id, data.spec_id])
-      .then(({rows})=>{
-        resolve(rows[0])
-      })
-      .catch(reject)
-    });
-  },
-  removeSpec: (data) => {
-    return new Promise(function(resolve, reject) {
-      db.query('delete from catagories_specs where catagory_id = $1 and spec_id = $2', [data.catagory_id, data.spec_id])
-      .then(({rows})=>{
-        resolve(rows[0])
+      db.query('delete from catagories_specs where catagory_id = $1', [catID]).then(res=>{
+        data.specs.map((spec, i)=> {
+          db.query('insert into catagories_specs (catagory_id, spec_id) values ($1, $2)', [catID, spec.id])
+          .then(()=>{
+            if (i === data.specs.length - 1) {resolve()}
+          })
+          .catch(reject)
+        })
       })
       .catch(reject)
     });
@@ -59,8 +63,8 @@ module.exports = {
         	)
         ) as catagory_specs
         from catagories
-        inner join catagories_specs on catagories_specs.catagory_id = catagories.id
-        inner join specs on catagories_specs.spec_id = specs.id
+        full join catagories_specs on catagories_specs.catagory_id = catagories.id
+        left join specs on catagories_specs.spec_id = specs.id
         group by catagories.id
       `).then(({rows})=>{
         resolve(rows)

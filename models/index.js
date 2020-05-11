@@ -4,4 +4,5 @@ module.exports = {
   meta: require('./meta'),
   spec: require('./spec'),
   catagory: require('./catagory'),
+  message: require('./message'),
 }

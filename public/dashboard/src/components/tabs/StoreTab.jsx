@@ -9,8 +9,18 @@ import SettingModal from './SettingModal'
 const StoreTab = props => {
   const [ showModal, setModal ] = useState(false)
   const [ settings, setSettings ] = useState(false)
-  const [ newProd, setNewProd ] = useState(false)
-  const [ workingProduct, setWorkingProduct ] = useState({})
+
+  const initWorkingProduct = {
+    id: 'new',
+    name: '',
+    description: '',
+    stock: 0,
+    price: 0.00,
+    ship_cost: 0.00,
+    media_links: []
+  }
+
+  const [ workingProduct, setWorkingProduct ] = useState(initWorkingProduct)
 
   const handlePoductSelect = product => {
     setWorkingProduct(product)
@@ -19,7 +29,7 @@ const StoreTab = props => {
 
   const handleModalClose = () => {
     setModal(false)
-    setWorkingProduct({})
+    setWorkingProduct(initWorkingProduct)
   }
 
   const makeProductTable = () => {
@@ -39,8 +49,24 @@ const StoreTab = props => {
 
   return (
     <Row>
-      <ProductModal updateProduct={props.updateProduct} show={showModal} workingProduct={workingProduct} setWorkingProduct={setWorkingProduct} onHide={handleModalClose}/>
-      { props.meta.brandname ? <SettingModal show={settings} onHide={()=>setSettings(false)} {...props.meta}/> : null}
+      { props.loaded ?
+        <ProductModal
+          updateProduct={props.updateProduct}
+          show={showModal}
+          {...props}
+          workingProduct={workingProduct}
+          setWorkingProduct={setWorkingProduct}
+          onHide={handleModalClose}
+          initWorkingProduct={initWorkingProduct}
+        />
+      : null}
+      {props.loaded ?
+        <SettingModal
+          show={settings}
+          onHide={()=>setSettings(false)}
+          {...props}
+        />
+        : null}
       <Col xs={2} style={{justifyContent: 'center'}}>
         <Button onClick={()=>setModal(true)}>Add Product</Button>
         <Button onClick={()=>setSettings(true)}>Store Settings</Button>
