@@ -7,16 +7,42 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Dropdown from 'react-bootstrap/Dropdown'
+import Alert from 'react-bootstrap/Alert'
+import { BASE_PATH } from '../../constants'
+import axios from 'axios'
 
 const ProductModal = props => {
-  const {workingProduct, show, onHide, updateProduct, catagories, catagoryList} = props
+  const {workingProduct, show, onHide, updateProduct, catagories, catagoryList, getMetaData, setWorkingProduct, initWorkingProduct} = props
   const [ edit, setEdit ] = useState(false)
 
+  const [ imgCanUp, setImgCanUp ] = useState(true)
+
   const [ product, setProduct ] = useState(workingProduct)
-  // console.log(props);
+  console.log(props);
   console.log('product',product);
   const [ activeCat, setActiveCat ] = useState({})
   console.log('activeCat', activeCat);
+
+  const [image, setImage] = useState()
+
+  const [ alert, setAlert ] = useState({props: {show: false}})
+  const alertDeets = {
+    success: {
+      text: 'Success!',
+      props: {
+        show: true,
+        variant: 'success'
+      }
+    },
+    failure: {
+      text: 'Failed to update. Dunno lol.',
+      props: {
+        show: true,
+        variant: 'danger'
+      }
+    },
+    autoClose: () => setTimeout(()=>setAlert({props: {show: false}}),3000)
+  }
 
   useEffect(() => {
     setProduct({
@@ -27,21 +53,56 @@ const ProductModal = props => {
     workingProduct.catagory && setActiveCat(catagories.find(cat=>cat.id === workingProduct.catagory))
   },[workingProduct])
 
+  const deleteProduct = () => {
+    axios.delete(`${BASE_PATH}/api/store/products/${product.id}`)
+    .then(()=>{
+      setAlert(alertDeets.success)
+      alertDeets.autoClose()
+      setWorkingProduct(initWorkingProduct)
+      getMetaData()
+      setTimeout(onHide, 3000)
+    }).catch(err=>{
+      console.log(err)
+      setAlert(alertDeets.failure)
+      alertDeets.autoClose()
+    })
+  }
+
+  const saveProduct = () => {
+    const prodPath = () => product.id === 'new' ? '' : `/${product.id}`
+    axios({
+      method: 'post',
+      url: `${BASE_PATH}/api/store/products${prodPath()}`,
+      data: product
+    }).then(()=>{
+      setAlert(alertDeets.success)
+      alertDeets.autoClose()
+      setWorkingProduct(initWorkingProduct)
+      getMetaData()
+      setTimeout(onHide, 3000)
+    }).catch(err=>{
+      console.log(err)
+      setAlert(alertDeets.failure)
+      alertDeets.autoClose()
+    })
+  }
+
   const specsList = () => {
     console.log(activeCat);
+    if (!product.specs_values) { return }
     return activeCat.catagory_specs.map(catSpec=>{
       return (
-        <Form.Row>
+        <Form.Row key={catSpec.type}>
           <Form.Label column sm={4} >{catSpec.type}</Form.Label>
           <Col>
             { catSpec.filter.values === 'numeric' ?
               <InputGroup>
-                <Form.Control value={product.specs_values[catSpec.type]} type='number' />
+                <Form.Control value={product.specs_values[catSpec.type]} onChange={e=>{productChange.spec(e, catSpec.type)}} type='number' />
                 <InputGroup.Append>
                   <InputGroup.Text>{catSpec.unit}</InputGroup.Text>
                 </InputGroup.Append>
-              </InputGroup> :
-              <Form.Control /> }
+              </InputGroup > :
+              <Form.Control value={product.specs_values[catSpec.type]} onChange={e=>{productChange.spec(e, catSpec.type)}} /> }
           </Col>
         </Form.Row>
       )
@@ -56,15 +117,41 @@ const ProductModal = props => {
     ship_cost: e => setProduct({...product, ship_cost: e.target.value}),
     oversell: e => setProduct({...product, oversell: e.target.checked}),
     catagory: cat => {
-      setActiveCat(cat)
       setProduct({...product, catagory: cat.id, specs_values: {}})
-    }
+      setActiveCat(cat)
+    },
+    spec: (e, type) => {
+      console.log(e.target.value);
+      console.log(type);
+      const newPoduct = {...product, specs_values:{...product.specs_values ,[type]: e.target.value}}
+      console.log(newPoduct);
+      setProduct(newPoduct)
+    },
+    media_links: link => setProduct({...product, media_links: [...product.media_links, link]})
+  }
+
+  const uploadFile = e => {
+    setImgCanUp(false)
+    const img = e.target.files[0]
+    axios({
+      method: 'post',
+      url: `${BASE_PATH}/api/images`,
+      headers: {
+        'Content-Type': 'application/octet-stream',
+        'File-Name': img.name
+      },
+      data: img
+    }).then(({data})=>{
+      productChange.media_links(data)
+      setImgCanUp(true)
+    }).catch(console.log)
   }
 
   return (
     <Modal show={show} onHide={onHide}>
       <Modal.Header closeButton />
       <Modal.Body>
+      <Alert {...alert.props} >{alert.text}</Alert>
         <Form>
           <Form.Group>
             <Form.Label><h5>Product Name</h5></Form.Label>
@@ -74,6 +161,13 @@ const ProductModal = props => {
             <Form.Label><h5>Product Description</h5></Form.Label>
             <Form.Control as='textarea' style={{minHeight: '7rem'}} value={product.description} onChange={productChange.description}/>
           </Form.Group>
+
+          <Form.Group>
+            <Form.Control type='file' disabled={!imgCanUp} onChange={uploadFile} />
+            { product.media_links.map((link, i)=><p key={`img-link-${i}`}>{/\/o\/(.+)\?/.exec(link)[1]}</p>) }
+          </Form.Group>
+
+
           <Form.Row>
             <Form.Group as={Col} md='3'>
               <Form.Label><h5>Stock</h5></Form.Label>
@@ -104,10 +198,10 @@ const ProductModal = props => {
               <Form.Label><h5>Catagory</h5></Form.Label>
             </Form.Group>
             <Form.Group as={Col}>
-              <Dropdown>
-                <Dropdown.Toggle>{ activeCat.name || 'Select'}</Dropdown.Toggle>
+              <Dropdown >
+                <Dropdown.Toggle variant='outline-primary'>{ activeCat.name || 'Select'}</Dropdown.Toggle>
                 <Dropdown.Menu>
-                  { catagories.map(cat=><Dropdown.Item onClick={()=>productChange.catagory(cat)}>{cat.name}</Dropdown.Item>) }
+                  { catagories.map(cat=><Dropdown.Item key={`kat-name-${cat.id}`} onClick={()=>productChange.catagory(cat)}>{cat.name}</Dropdown.Item>) }
                 </Dropdown.Menu>
               </Dropdown>
             </Form.Group>
@@ -120,8 +214,9 @@ const ProductModal = props => {
               { activeCat.catagory_specs && specsList() }
             </Form.Group>
           </Form.Row>
-          <Form.Row style={{justifyContent: 'flex-end'}}>
-            <Button>Save</Button>
+          <Form.Row style={{justifyContent: 'space-between'}}>
+            <Button onClick={deleteProduct} disabled={product.id === 'new' ? true : false}>Delete</Button>
+            <Button onClick={saveProduct}>Save</Button>
           </Form.Row>
         </Form>
       </Modal.Body>

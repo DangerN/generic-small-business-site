@@ -12,11 +12,13 @@ const StoreTab = props => {
   const [ newProd, setNewProd ] = useState(false)
 
   const initWorkingProduct = {
+    id: 'new',
     name: '',
     description: '',
     stock: 0,
     price: 0.00,
     ship_cost: 0.00,
+    media_links: []
   }
 
   const [ workingProduct, setWorkingProduct ] = useState(initWorkingProduct)
@@ -30,7 +32,7 @@ const StoreTab = props => {
 
   const handleModalClose = () => {
     setModal(false)
-    setWorkingProduct({})
+    setWorkingProduct(initWorkingProduct)
   }
 
   const makeProductTable = () => {
@@ -58,9 +60,16 @@ const StoreTab = props => {
           workingProduct={workingProduct}
           setWorkingProduct={setWorkingProduct}
           onHide={handleModalClose}
+          initWorkingProduct={initWorkingProduct}
         />
       : null}
-      {props.loaded ? <SettingModal show={settings} onHide={()=>setSettings(false)} {...props} /> : null}
+      {props.loaded ?
+        <SettingModal
+          show={settings}
+          onHide={()=>setSettings(false)}
+          {...props}
+        />
+        : null}
       <Col xs={2} style={{justifyContent: 'center'}}>
         <Button onClick={()=>setModal(true)}>Add Product</Button>
         <Button onClick={()=>setSettings(true)}>Store Settings</Button>
