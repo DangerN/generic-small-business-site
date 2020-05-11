@@ -10,7 +10,16 @@ const StoreTab = props => {
   const [ showModal, setModal ] = useState(false)
   const [ settings, setSettings ] = useState(false)
   const [ newProd, setNewProd ] = useState(false)
-  const [ workingProduct, setWorkingProduct ] = useState({})
+
+  const initWorkingProduct = {
+    name: '',
+    description: '',
+    stock: 0,
+    price: 0.00,
+    ship_cost: 0.00,
+  }
+
+  const [ workingProduct, setWorkingProduct ] = useState(initWorkingProduct)
 
   console.log(props);
 
