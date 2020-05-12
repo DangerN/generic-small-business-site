@@ -34,11 +34,31 @@ function App() {
     .then(({data})=>metaDispatch({type: 'dumpMeta', payload: data}))
     axios(`${BASE_PATH}/api/store/products`)
     .then(({data})=>dispatch({type: 'setProducts', payload: data}))
+    axios(`${BASE_PATH}/api/meta/spec-list`)
+    .then(({data})=>metaDispatch({type: 'specList', payload: data}))
+    axios(`${BASE_PATH}/api/meta/catagory-list`)
+    .then(({data})=>metaDispatch({type: 'catagoryList', payload: data}))
   },[dispatch, metaDispatch])
 
   useEffect(() => {
     metaState.meta && state.products && setLoaded(true)
   }, [state, metaState])
+
+  const execSearch = () => {
+    state.products.forEach((product, idx) => {
+      let weight = 0
+      if(product.name.includes(state.searchTerm)) {weight += 1}
+      if(product.description.includes(state.searchTerm)) {weight += 1}
+      let specVals = Object.keys(product.specs_values)
+      for (var i = 0; i < specVals.length; i++) {
+        if(specVals[i].includes(state.searchTerm)) {weight += 1}
+      }
+      dispatch({type: 'weightProduct', payload: {index: idx, product: product}})
+    })
+
+  }
+
+  console.log(state.products);
 
   return (
     <div className="App" style={BACK_IMG}>
@@ -62,7 +82,7 @@ function App() {
               <User />
             </Route>
             <Route path='/store'>
-              <Store {...state} dispatch={dispatch} />
+              { loaded ? <Store {...state} {...metaState} dispatch={dispatch} /> : null}
             </Route>
             <Route >
               <NotFoundPage />

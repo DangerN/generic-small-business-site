@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useRouteMatch, Switch, Route } from 'react-router-dom'
 import Product from './Product'
 import StoreSidebar from './StoreSidebar'
+import Filter from './Filter'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 
@@ -9,20 +10,25 @@ import ProductCard from './ProductCard'
 
 const Store = props => {
   // eslint-disable-next-line
-  const { products, dispatch } = props
+  const { products, dispatch, catagories } = props
   // eslint-disable-next-line
   let { path, url } = useRouteMatch()
+
+  const [ activeCat, setActiveCat ] = useState('')
+
+  console.log(props);
 
   return (
     <Row>
       <Route exact path={path}>
-        <StoreSidebar style={{height: '92vh', overflow: 'scroll'}}/>
+        <StoreSidebar activeCat={activeCat} setActiveCat={setActiveCat} catagories={catagories} style={{height: '92vh', overflow: 'scroll'}}/>
       </Route>
       <Col xs={9} lg={10}>
         <Row style={{height: '92vh', overflow: 'scroll'}}>
+          { activeCat ? <}
           <Switch>
             <Route exact path={path}>
-              { products && products.map(ProductCard) }
+              { products.map(ProductCard) }
             </Route>
             <Route path={`${path}/:productId`}>
               {products.length ? <Product {...props} /> : "spinner"}
