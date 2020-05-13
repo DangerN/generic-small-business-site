@@ -6,6 +6,7 @@ import Filter from './Filter'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 
+import useColor from '../hooks/useColor'
 import ProductCard from './ProductCard'
 
 const Store = props => {
@@ -14,7 +15,15 @@ const Store = props => {
   // eslint-disable-next-line
   let { path, url } = useRouteMatch()
 
-  const [ activeCat, setActiveCat ] = useState('')
+  const linkColor = useColor('link')
+
+  const [ activeCat, setActiveCat ] = useState()
+
+  const genProductCards = () => {
+    return products.map(product=>{
+      return <ProductCard {...product} linkColor={linkColor} />
+    })
+  }
 
   console.log(props);
 
@@ -25,10 +34,14 @@ const Store = props => {
       </Route>
       <Col xs={9} lg={10}>
         <Row style={{height: '92vh', overflow: 'scroll'}}>
-          { activeCat ? <}
           <Switch>
             <Route exact path={path}>
-              { products.map(ProductCard) }
+              <Col style={{width: '100%'}}>
+                {activeCat ? <Filter {...props} activeCat={activeCat} /> : null}
+              </Col>
+              <Row>
+                { genProductCards }
+              </Row>
             </Route>
             <Route path={`${path}/:productId`}>
               {products.length ? <Product {...props} /> : "spinner"}
