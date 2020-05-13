@@ -21,6 +21,7 @@ const Store = props => {
 
   const genProductCards = () => {
     return products.map(product=>{
+      console.log('gener');
       return <ProductCard {...product} linkColor={linkColor} />
     })
   }
@@ -36,12 +37,8 @@ const Store = props => {
         <Row style={{height: '92vh', overflow: 'scroll'}}>
           <Switch>
             <Route exact path={path}>
-              <Col style={{width: '100%'}}>
-                {activeCat ? <Filter {...props} activeCat={activeCat} /> : null}
-              </Col>
-              <Row>
-                { genProductCards }
-              </Row>
+              {activeCat ? <Filter {...props} activeCat={activeCat} /> : null}
+              { genProductCards() }
             </Route>
             <Route path={`${path}/:productId`}>
               {products.length ? <Product {...props} /> : "spinner"}
