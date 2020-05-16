@@ -15,7 +15,6 @@ const Store = props => {
   const { products, dispatch, catagories } = props
   // eslint-disable-next-line
   let { path, url } = useRouteMatch()
-  console.log(products);
 
   const linkColor = useColor('link')
 
@@ -39,8 +38,6 @@ const Store = props => {
     })
   }
 
-  console.log(props);
-  console.log(activeCat);
   return (
     <Row>
       <Route exact path={path}>
