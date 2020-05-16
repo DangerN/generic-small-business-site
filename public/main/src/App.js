@@ -44,22 +44,6 @@ function App() {
     metaState.meta && state.products && setLoaded(true)
   }, [state, metaState])
 
-  const execSearch = () => {
-    state.products.forEach((product, idx) => {
-      let weight = 0
-      if(product.name.includes(state.searchTerm)) {weight += 1}
-      if(product.description.includes(state.searchTerm)) {weight += 1}
-      let specVals = Object.keys(product.specs_values)
-      for (var i = 0; i < specVals.length; i++) {
-        if(specVals[i].includes(state.searchTerm)) {weight += 1}
-      }
-      dispatch({type: 'weightProduct', payload: {index: idx, product: product}})
-    })
-
-  }
-
-  console.log(state.products);
-
   return (
     <div className="App" style={BACK_IMG}>
       <Router>
