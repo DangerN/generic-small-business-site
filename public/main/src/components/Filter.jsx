@@ -28,7 +28,17 @@ const Filter = props => {
       return {
         string: () => {
           return (
-            'yeet'
+            <Col md={4}>
+              <Form.Group>
+              <Form.Label>{catSpec.type}</Form.Label>
+                <InputGroup>
+                  <InputGroup.Prepend>
+                    <InputGroup.Text>{catSpec.unit}</InputGroup.Text>
+                  </InputGroup.Prepend>
+                  <Form.Control />
+                </InputGroup>
+              </Form.Group>
+            </Col>
           )
         },
         numeric: () => {
@@ -43,7 +53,7 @@ const Filter = props => {
                   </InputGroup.Append>
                 </InputGroup>
                 <InputGroup>
-                  <Form.Control placeholder='Max' />
+                  <Form.Control type='number' value={filter[catSpec.type] ? filter[catSpec.type].max : ''} onChange={e=>changeFilter(catSpec.type, e.target.value, 'max')}  placeholder='Max' />
                   <InputGroup.Append>
                     <InputGroup.Text>{catSpec.unit}</InputGroup.Text>
                   </InputGroup.Append>
