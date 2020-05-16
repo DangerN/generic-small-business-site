@@ -21,6 +21,7 @@ const Store = props => {
 
   const [ activeCat, setActiveCat ] = useState()
   const [ filter, setFilter ] = useState({})
+  // eslint-disable-next-line
   const [ catProducts, setCatProducts ] = useState([])
 
   useEffect(() => {
@@ -30,7 +31,7 @@ const Store = props => {
     }
     let filteredProducts = products.filter(product=>product.catagory===activeCat.id)
     setCatProducts(filteredProducts)
-  }, [activeCat])
+  }, [activeCat, products])
 
   const genProductCards = () => {
     return products.map(product=>{

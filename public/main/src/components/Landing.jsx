@@ -1,16 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import InputGroup from 'react-bootstrap/InputGroup'
-import FormControl from 'react-bootstrap/FormControl'
 import Button from 'react-bootstrap/Button'
-import Form from 'react-bootstrap/Form'
 import Jumbotron from 'react-bootstrap/Jumbotron'
-import { FaSearch } from 'react-icons/fa'
 
 import useColor from '../hooks/useColor'
 
 const Landing = props => {
-  const { searchTerm, dispatch, meta } = props
+  const { meta } = props
   return (
     <Jumbotron className='bg-light' style={{alignItems: 'center', display: 'flex', flexFlow: 'column'}}>
       <h2 style={{ ...meta.brandstyle}}>{meta.brandname}</h2>
