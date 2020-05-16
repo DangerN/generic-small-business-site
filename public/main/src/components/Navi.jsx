@@ -14,6 +14,7 @@ const Navi = props => {
         <Nav className='mr-auto'>
           <Nav.Link {...useColor('link')} to='/about' as={Link} >About</Nav.Link>
           <Nav.Link {...useColor('link')} to='/contact' as={Link} >Contact</Nav.Link>
+          <Nav.Link {...useColor('link')} to='/store' as={Link} >Store</Nav.Link>
         </Nav>
         <Form inline>
           <InputGroup>

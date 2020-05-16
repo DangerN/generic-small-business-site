@@ -34,6 +34,10 @@ function App() {
     .then(({data})=>metaDispatch({type: 'dumpMeta', payload: data}))
     axios(`${BASE_PATH}/api/store/products`)
     .then(({data})=>dispatch({type: 'setProducts', payload: data}))
+    axios(`${BASE_PATH}/api/meta/spec-list`)
+    .then(({data})=>metaDispatch({type: 'specList', payload: data}))
+    axios(`${BASE_PATH}/api/meta/catagory-list`)
+    .then(({data})=>metaDispatch({type: 'catagoryList', payload: data}))
   },[dispatch, metaDispatch])
 
   useEffect(() => {
@@ -62,7 +66,7 @@ function App() {
               <User />
             </Route>
             <Route path='/store'>
-              <Store {...state} dispatch={dispatch} />
+              { loaded ? <Store {...state} {...metaState} dispatch={dispatch} /> : null}
             </Route>
             <Route >
               <NotFoundPage />

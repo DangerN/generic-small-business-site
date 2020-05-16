@@ -12,6 +12,6 @@ describe('<Navi />', () => {
   it('renders nav links', () => {
     const wrapper = shallow(<Navi meta={{"":""}} />)
     wrapper.find(Navbar.Brand).should.have.lengthOf(1)
-    wrapper.find(Nav.Link).should.have.lengthOf(4)
+    wrapper.find(Nav.Link).should.have.lengthOf(5)
   })
 })
