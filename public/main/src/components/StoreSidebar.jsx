@@ -5,13 +5,17 @@ import useColor from '../hooks/useColor'
 
 const StoreSidebar = props => {
   const buttonColor = useColor('button')
-  const { catagories, setActiveCat } = props
+  const { catagories, setActiveCat, setFilter } = props
 
-  console.log(props);
+  const handleClick = cat => {
+    setActiveCat(cat)
+    setFilter({})
+  }
+
   const displayCats = () => {
     return props.catagories.map((cat) => {
       return (
-        <Button variant='outline-primary' onClick={()=>setActiveCat(cat)} >{cat.name}</Button>
+        <Button variant='outline-primary' onClick={()=>handleClick(cat)} >{cat.name}</Button>
       )
     })
   }

@@ -10,25 +10,14 @@ import { FaSearch } from 'react-icons/fa'
 import useColor from '../hooks/useColor'
 
 const Landing = props => {
-  console.log(props);
   const { searchTerm, dispatch, meta } = props
   return (
-    <>
-      <Jumbotron className='bg-light'>
-        <h2 style={{textAlign: 'center', ...meta.brandstyle}}>{meta.brandname}</h2>
-        <p style={{textAlign: 'center'}} className='bg-light'>{meta.tagline}</p>
-        <p style={{textAlign: 'center'}}>Background by <a {...useColor('link')} href='https://unsplash.com/@monaeendra?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText'>Mona Eendra</a> on <a href='https://unsplash.com/s/photos/longboard?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText' {...useColor('link')}>Unsplash</a></p>
-      </Jumbotron>
-      <Form onSubmit={'handleSearch'}>
-        <InputGroup>
-          <FormControl {...useColor('input')} value={searchTerm} onChange={e=>dispatch({type: 'updateSearch', payload: e.target.value})}/>
-          <InputGroup.Append>
-            <Button {...useColor('button')}><FaSearch/></Button>
-            <Button as={Link} to='/store' {...useColor('button')}>Browse</Button>
-          </InputGroup.Append>
-        </InputGroup>
-      </Form>
-    </>
+    <Jumbotron className='bg-light' style={{alignItems: 'center', display: 'flex', flexFlow: 'column'}}>
+      <h2 style={{ ...meta.brandstyle}}>{meta.brandname}</h2>
+      <p className='bg-light'>{meta.tagline}</p>
+      <p >Background by <a {...useColor('link')} href='https://unsplash.com/@monaeendra?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText'>Mona Eendra</a> on <a href='https://unsplash.com/s/photos/longboard?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText' {...useColor('link')}>Unsplash</a></p>
+      <Button as={Link} to='/store' {...useColor('button')}>Enter The Store</Button>
+    </Jumbotron>
   )
 }
 

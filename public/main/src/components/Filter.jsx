@@ -1,14 +1,65 @@
 import React from 'react'
+import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
+import Form from 'react-bootstrap/Form'
+import InputGroup from 'react-bootstrap/InputGroup'
 
 const Filter = props => {
-  const { activeCat } = props
+  const { activeCat, filter, setFilter } = props
+  console.log(filter);
+
   console.log('acivecat', activeCat);
   console.log(props);
+
+
+  // types min max text
+  // value
+  // where it goes
+  const changeFilter = (name, value, type) => {
+    setFilter({...filter, [name]: {
+      min: {...filter[name], min: value},
+      max: {...filter[name], max: value},
+      text: {...filter[name], text: value}
+    }[type]})
+  }
+
+  const generateFilters = () => {
+    return activeCat.catagory_specs.map(catSpec=>{
+      return {
+        string: () => {
+          return (
+            'yeet'
+          )
+        },
+        numeric: () => {
+          return (
+            <Col md={3}>
+              <Form.Group>
+                <Form.Label>{catSpec.type}</Form.Label>
+                <InputGroup>
+                  <Form.Control type='number' value={filter[catSpec.type] ? filter[catSpec.type].min : ''} onChange={e=>changeFilter(catSpec.type, e.target.value, 'min')} placeholder='Min'/>
+                  <InputGroup.Append>
+                    <InputGroup.Text>{catSpec.unit}</InputGroup.Text>
+                  </InputGroup.Append>
+                </InputGroup>
+                <InputGroup>
+                  <Form.Control placeholder='Max' />
+                  <InputGroup.Append>
+                    <InputGroup.Text>{catSpec.unit}</InputGroup.Text>
+                  </InputGroup.Append>
+                </InputGroup>
+              </Form.Group>
+            </Col>
+          )
+        }
+      }[catSpec.filter.values]()
+    })
+  }
+
+
   return (
-    <Row>
-      fucking hell
-      {activeCat.catagory_specs.type}
+    <Row style={{backgroundColor: 'white'}}>
+        { generateFilters() }
     </Row>
   )
 }
