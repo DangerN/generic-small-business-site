@@ -1,10 +1,8 @@
 import React from 'react'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
-import useColor from '../hooks/useColor'
 
 const StoreSidebar = props => {
-  const buttonColor = useColor('button')
   const { catagories, setActiveCat, setFilter } = props
 
   const handleClick = cat => {
@@ -13,7 +11,7 @@ const StoreSidebar = props => {
   }
 
   const displayCats = () => {
-    return props.catagories.map((cat) => {
+    return catagories.map((cat) => {
       return (
         <Button key={`cat-${cat.name}`} variant='outline-primary' onClick={()=>handleClick(cat)} >{cat.name}</Button>
       )
