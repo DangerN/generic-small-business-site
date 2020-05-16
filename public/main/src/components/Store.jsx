@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useRouteMatch, Switch, Route } from 'react-router-dom'
 import Product from './Product'
 import StoreSidebar from './StoreSidebar'
@@ -15,20 +15,31 @@ const Store = props => {
   const { products, dispatch, catagories } = props
   // eslint-disable-next-line
   let { path, url } = useRouteMatch()
+  console.log(products);
 
   const linkColor = useColor('link')
 
   const [ activeCat, setActiveCat ] = useState()
   const [ filter, setFilter ] = useState({})
+  const [ catProducts, setCatProducts ] = useState([])
+
+  useEffect(() => {
+    if (!activeCat) {
+      setCatProducts(products)
+      return
+    }
+    let filteredProducts = products.filter(product=>product.catagory===activeCat.id)
+    setCatProducts(filteredProducts)
+  }, [activeCat])
 
   const genProductCards = () => {
     return products.map(product=>{
-      return <ProductCard {...product} linkColor={linkColor} />
+      return <ProductCard key={`product-${product.id}`} {...product} linkColor={linkColor} />
     })
   }
 
   console.log(props);
-
+  console.log(activeCat);
   return (
     <Row>
       <Route exact path={path}>

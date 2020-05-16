@@ -28,7 +28,7 @@ const Filter = props => {
       return {
         string: () => {
           return (
-            <Col md={4}>
+            <Col md={4} key={`filter-${catSpec.type}`}>
               <Form.Group>
               <Form.Label>{catSpec.type}</Form.Label>
                 <InputGroup>
@@ -43,7 +43,7 @@ const Filter = props => {
         },
         numeric: () => {
           return (
-            <Col md={3}>
+            <Col md={3} key={`filter-${catSpec.type}`}>
               <Form.Group>
                 <Form.Label>{catSpec.type}</Form.Label>
                 <InputGroup>

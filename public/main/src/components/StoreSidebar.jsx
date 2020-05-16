@@ -15,7 +15,7 @@ const StoreSidebar = props => {
   const displayCats = () => {
     return props.catagories.map((cat) => {
       return (
-        <Button variant='outline-primary' onClick={()=>handleClick(cat)} >{cat.name}</Button>
+        <Button key={`cat-${cat.name}`} variant='outline-primary' onClick={()=>handleClick(cat)} >{cat.name}</Button>
       )
     })
   }
